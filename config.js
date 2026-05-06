@@ -5,7 +5,7 @@
 
 const BC_CONFIG = {
   // ← PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE after deploying
-  API_URL: 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwcXr0bCuLYAoXJWNCOtFHtU8TwJs-BcX2rD0eait1o0W5P1fkYp7oznQVF3CoRqPPN0g/exec/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbwcXr0bCuLYAoXJWNCOtFHtU8TwJs-BcX2rD0eait1o0W5P1fkYp7oznQVF3CoRqPPN0g/exec',
 
   APP_NAME: 'Bicholim Connect',
   LOCATION: 'Bicholim, Goa',
