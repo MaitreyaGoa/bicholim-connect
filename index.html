@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bicholim Connect — Local Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1321;--navy-2:#1a2236;--navy-3:#253047;--gold:#c9a84c;--gold-light:#e8c96a;--gold-pale:rgba(201,168,76,0.12);--green:#16a34a;--green-pale:rgba(22,163,74,0.1);--cream:#f9f5ee;--text:#1a1a2e;--muted:#7a8499;--border:rgba(0,0,0,0.07);--white:#ffffff;--radius:20px;--radius-lg:32px}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+header{background:var(--navy);padding:18px 7%;position:sticky;top:0;z-index:999;border-bottom:1px solid rgba(201,168,76,0.2)}
+.navbar{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;text-decoration:none}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:12px;align-items:center}
+.nav-link{color:#9aa3b8;text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:12px;transition:all .25s}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,0.07)}
+.nav-link.cta{background:var(--gold);color:var(--navy);font-weight:700}
+.nav-link.cta:hover{background:var(--gold-light)}
+
+/* HERO */
+.hero{background:var(--navy);padding:80px 7% 70px;position:relative;overflow:hidden;text-align:center}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.2;pointer-events:none}
+.orb-1{width:500px;height:500px;background:radial-gradient(circle,#c9a84c,transparent 70%);top:-150px;left:-100px}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle,#2563eb,transparent 70%);bottom:-100px;right:-80px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.3);color:var(--gold-light);font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:999px;margin-bottom:24px;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,64px);font-weight:700;color:#fff;line-height:1.1;letter-spacing:-2px;max-width:780px;margin:0 auto 18px;position:relative}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{font-size:17px;color:#9aa3b8;max-width:580px;margin:0 auto 36px;line-height:1.7;font-weight:300;position:relative}
+.search-wrap{position:relative;max-width:540px;margin:0 auto 20px}
+.search-wrap input{width:100%;padding:18px 54px 18px 22px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);color:#fff;font-size:16px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .3s,background .3s}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.3)}
+.search-wrap input:focus{border-color:var(--gold);background:rgba(255,255,255,0.1)}
+.search-icon{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:20px;pointer-events:none}
+.hero-stats{display:flex;justify-content:center;gap:48px;margin-top:40px;position:relative;flex-wrap:wrap}
+.stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold)}
+.stat-label{font-size:12px;color:#9aa3b8;margin-top:3px}
+.hero-divider{height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.3),transparent);margin-top:50px}
+
+/* CATEGORY PILLS */
+.section{padding:60px 7%;position:relative;z-index:1}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-1.5px;margin-bottom:32px}
+.cat-pills{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
+.cat-pill{padding:10px 18px;border-radius:999px;border:1px solid var(--border);background:var(--white);font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;color:var(--muted)}
+.cat-pill:hover,.cat-pill.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+
+/* LISTINGS GRID */
+.listings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.listing-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;transition:transform .3s ease,box-shadow .3s ease,border-color .3s;position:relative;overflow:hidden}
+.listing-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold-pale),transparent 60%);opacity:0;transition:opacity .4s}
+.listing-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,0.09);border-color:rgba(201,168,76,.3)}
+.listing-card:hover::before{opacity:1}
+.lc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;position:relative}
+.lc-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1.2}
+.lc-cat{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);padding:4px 10px;border-radius:999px;margin-top:6px;display:inline-block}
+.lc-icon{font-size:28px;flex-shrink:0}
+.lc-service{font-size:14px;color:var(--muted);margin-bottom:14px;font-weight:500;position:relative}
+.lc-meta{display:flex;flex-direction:column;gap:7px;position:relative}
+.lc-row{display:flex;align-items:center;gap:8px;font-size:14px;color:#555}
+.lc-row span:first-child{font-size:15px;flex-shrink:0}
+.lc-actions{display:flex;gap:10px;margin-top:18px;position:relative}
+.lc-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px;border:none;border-radius:14px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s;text-decoration:none}
+.lc-btn-primary{background:var(--navy);color:#fff}
+.lc-btn-primary:hover{background:var(--navy-3)}
+.lc-btn-wa{background:#25d366;color:#fff}
+.lc-btn-wa:hover{background:#1fba57}
+
+/* STATES */
+.loading-state,.empty-state{text-align:center;padding:80px 20px;color:var(--muted)}
+.spinner{display:inline-block;width:40px;height:40px;border:3px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-icon{font-size:48px;margin-bottom:16px}
+
+/* CTA BOX */
+.cta-box{margin-top:60px;background:var(--navy);border-radius:var(--radius-lg);padding:52px 56px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:36px;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(201,168,76,.2),transparent 70%);top:-80px;right:-60px;border-radius:50%}
+.cta-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);font-weight:700;color:#fff;line-height:1.2;margin-bottom:10px;letter-spacing:-1px}
+.cta-desc{font-size:15px;color:#9aa3b8;line-height:1.6}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--navy);text-decoration:none;padding:17px 26px;border-radius:var(--radius);font-weight:700;font-size:15px;font-family:'DM Sans',sans-serif;white-space:nowrap;position:relative;z-index:1;transition:background .3s,transform .3s}
+.cta-btn:hover{background:var(--gold-light);transform:scale(1.04)}
+
+footer{background:var(--navy);color:#9aa3b8;padding:30px 7%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.06);margin-top:20px}
+.footer-logo{font-family:'Playfair Display',serif;font-size:20px;color:#fff;font-weight:700}
+.footer-logo span{color:var(--gold)}
+.footer-copy{font-size:13px}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:14px 24px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:9999;border:1px solid rgba(201,168,76,.3);pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .5s ease both}
+
+@media(max-width:768px){
+  .cta-box{grid-template-columns:1fr;padding:36px 28px}
+  .hero-stats{gap:24px}
+  .nav-links .nav-link:not(.cta){display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="logo">Bicholim <span>Connect</span></a>
+    <div class="nav-links">
+      <a href="submit.html" class="nav-link">List Your Business</a>
+      <a href="admin.html" class="nav-link">Admin</a>
+      <a href="submit.html" class="nav-link cta">+ Add Service</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-eyebrow">✦ Bicholim's Trusted Directory</div>
+  <h1>Your City's Services,<br><em>All in One Place</em></h1>
+  <p>Discover trusted local businesses, emergency contacts, professionals, and everyday services across Bicholim.</p>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search electricians, hospitals, restaurants…">
+    <span class="search-icon">⌕</span>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num" id="totalCount">—</div><div class="stat-label">Local Businesses</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Emergency Info</div></div>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<section class="section">
+  <div class="section-label">Browse</div>
+  <div class="section-title">Explore Services</div>
+
+  <div class="cat-pills" id="catPills">
+    <div class="cat-pill active" data-cat="all">✨ All Services</div>
+  </div>
+
+  <div id="listingsContainer">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading services…</p>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <div class="cta-label">For Businesses</div>
+      <div class="cta-title">List Your Business on Bicholim Connect</div>
+      <p class="cta-desc">Get discovered by thousands of locals. Submit your details and go live after admin approval.</p>
+    </div>
+    <a href="submit.html" class="cta-btn">+ List Your Business</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Bicholim <span>Connect</span></div>
+  <div class="footer-copy">© 2026 Bicholim Connect · Connecting Local Services Digitally</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script>
+const CATEGORIES = BC_CONFIG.CATEGORIES;
+let allListings = [];
+let activeCategory = 'all';
+let searchQuery = '';
+
+// Build category pills
+function buildPills() {
+  const container = document.getElementById('catPills');
+  CATEGORIES.forEach(cat => {
+    const el = document.createElement('div');
+    el.className = 'cat-pill';
+    el.dataset.cat = cat.id;
+    el.textContent = cat.icon + ' ' + cat.label;
+    el.addEventListener('click', () => filterCat(cat.id));
+    container.appendChild(el);
+  });
+}
+
+function filterCat(id) {
+  activeCategory = id;
+  document.querySelectorAll('.cat-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.cat === id);
+  });
+  renderListings();
+}
+
+function getCatIcon(catId) {
+  const c = CATEGORIES.find(x => x.id === catId);
+  return c ? c.icon : '📋';
+}
+
+function getCatLabel(catId) {
+  const c = CATEGORIES.find(x => x.id === catId);
+  return c ? c.label : catId;
+}
+
+function renderListings() {
+  const q = searchQuery.toLowerCase();
+  const filtered = allListings.filter(l => {
+    const catMatch = activeCategory === 'all' || l.category === activeCategory;
+    const searchMatch = !q || [l.name, l.serviceType, l.location].join(' ').toLowerCase().includes(q);
+    return catMatch && searchMatch;
+  });
+
+  const grid = document.getElementById('listingsContainer');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>No services found. Try a different search or category.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = `<div class="listings-grid">${filtered.map(l => `
+    <div class="listing-card fade-in">
+      <div class="lc-top">
+        <div>
+          <div class="lc-name">${esc(l.name)}</div>
+          <span class="lc-cat">${getCatLabel(l.category)}</span>
+        </div>
+        <span class="lc-icon">${getCatIcon(l.category)}</span>
+      </div>
+      <div class="lc-service">${esc(l.serviceType)}</div>
+      <div class="lc-meta">
+        <div class="lc-row"><span>📞</span> ${formatPhone(l.phone)}</div>
+        <div class="lc-row"><span>📍</span> ${esc(l.location)}</div>
+        ${l.description ? `<div class="lc-row"><span>📝</span> ${esc(l.description.substring(0,80))}${l.description.length>80?'…':''}</div>` : ''}
+      </div>
+      <div class="lc-actions">
+        <a href="tel:${l.phone}" class="lc-btn lc-btn-primary">📞 Call</a>
+        <a href="https://wa.me/91${l.phone}" target="_blank" class="lc-btn lc-btn-wa">💬 WhatsApp</a>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function formatPhone(p) {
+  const s = String(p);
+  return s.length === 10 ? `${s.slice(0,5)} ${s.slice(5)}` : s;
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+async function loadListings() {
+  try {
+    const res = await BC_CONFIG.get('getListings');
+    if (res.success) {
+      allListings = res.listings || [];
+      document.getElementById('totalCount').textContent = allListings.length + '+';
+      renderListings();
+    } else {
+      throw new Error(res.error);
+    }
+  } catch(e) {
+    document.getElementById('listingsContainer').innerHTML =
+      `<div class="empty-state"><div class="empty-icon">⚠️</div><p>Could not load listings. Make sure the API URL is set in config.js</p></div>`;
+  }
+}
+
+// Search debounce
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchQuery = e.target.value;
+    renderListings();
+  }, 300);
+});
+
+buildPills();
+loadListings();
+</script>
+</body>
+</html>

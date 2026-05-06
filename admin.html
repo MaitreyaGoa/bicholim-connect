@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Bicholim Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1321;--navy-2:#1a2236;--navy-3:#253047;--gold:#c9a84c;--gold-light:#e8c96a;--gold-pale:rgba(201,168,76,0.12);--cream:#f9f5ee;--text:#1a1a2e;--muted:#7a8499;--border:rgba(0,0,0,0.08);--white:#ffffff;--radius:14px;--radius-lg:24px;--green:#16a34a;--red:#dc2626;--amber:#d97706}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+/* ─ LOGIN ─ */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);position:fixed;inset:0;z-index:999}
+.login-card{background:#fff;border-radius:var(--radius-lg);padding:48px 40px;width:100%;max-width:420px;box-shadow:0 30px 80px rgba(0,0,0,0.3)}
+.login-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.login-logo span{color:var(--gold)}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:32px}
+.login-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin-bottom:4px}
+.form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+label{font-size:13px;font-weight:700;color:var(--text)}
+input{padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color .25s,box-shadow .25s;width:100%}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-pale)}
+.btn-login{width:100%;padding:16px;background:var(--navy);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s;margin-top:8px}
+.btn-login:hover{background:var(--navy-2)}
+.btn-login:disabled{opacity:.6;cursor:not-allowed}
+.login-error{background:#fee2e2;border:1px solid rgba(220,38,38,.3);color:var(--red);padding:12px 16px;border-radius:var(--radius);font-size:13px;font-weight:600;margin-top:14px;display:none}
+
+/* ─ ADMIN PANEL ─ */
+#adminPanel{display:none}
+.sidebar{width:240px;background:var(--navy);position:fixed;top:0;left:0;bottom:0;padding:24px 0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06);z-index:100}
+.sb-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo span{color:var(--gold)}
+.sb-badge{font-size:10px;color:#9aa3b8;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:0 24px;margin:20px 0 10px}
+.sb-nav{list-style:none;display:flex;flex-direction:column;gap:2px;padding:0 12px}
+.sb-nav li a{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;color:#9aa3b8;text-decoration:none;font-size:14px;font-weight:600;transition:all .25s}
+.sb-nav li a:hover{background:rgba(255,255,255,.06);color:#fff}
+.sb-nav li a.active{background:var(--gold-pale);color:var(--gold-light)}
+.sb-nav li a .badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;min-width:18px;text-align:center}
+.sb-bottom{margin-top:auto;padding:16px 12px}
+.btn-logout{width:100%;padding:12px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#9aa3b8;border-radius:12px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s}
+.btn-logout:hover{border-color:#fff;color:#fff}
+
+.content{margin-left:240px;padding:36px;min-height:100vh}
+.page-header{margin-bottom:28px}
+.page-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:4px}
+.page-sub{font-size:14px;color:var(--muted)}
+
+/* ─ STATS CARDS ─ */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:32px}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;gap:6px}
+.stat-card-icon{font-size:24px;margin-bottom:4px}
+.stat-card-num{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--text);letter-spacing:-1px}
+.stat-card-label{font-size:13px;color:var(--muted);font-weight:500}
+
+/* ─ TABS / FILTER ─ */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.filter-tab{padding:9px 18px;border-radius:999px;border:1.5px solid var(--border);background:var(--white);font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .25s}
+.filter-tab:hover,.filter-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.filter-count{background:rgba(0,0,0,.07);color:inherit;font-size:11px;padding:1px 7px;border-radius:999px;margin-left:4px}
+.filter-tab.active .filter-count{background:rgba(255,255,255,.2)}
+
+/* ─ LISTING ROWS ─ */
+.listings-table{display:flex;flex-direction:column;gap:12px}
+.listing-row{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.lr-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:3px}
+.lr-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.lr-meta span{display:flex;align-items:center;gap:5px}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.badge-pending{background:rgba(217,119,6,.1);color:var(--amber);border:1px solid rgba(217,119,6,.25)}
+.badge-approved{background:rgba(22,163,74,.1);color:var(--green);border:1px solid rgba(22,163,74,.25)}
+.badge-rejected{background:rgba(220,38,38,.1);color:var(--red);border:1px solid rgba(220,38,38,.25)}
+.lr-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.action-btn{padding:9px 16px;border:none;border-radius:12px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:5px}
+.btn-approve{background:rgba(22,163,74,.1);color:var(--green)}
+.btn-approve:hover{background:var(--green);color:#fff}
+.btn-reject{background:rgba(220,38,38,.1);color:var(--red)}
+.btn-reject:hover{background:var(--red);color:#fff}
+.btn-delete{background:rgba(0,0,0,.06);color:var(--muted)}
+.btn-delete:hover{background:#111;color:#fff}
+.btn-expand{background:rgba(0,0,0,.06);color:var(--muted)}
+.btn-expand:hover{background:var(--navy-2);color:#fff}
+
+/* ─ EXPANDED DETAIL ─ */
+.lr-expanded{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);grid-column:1/-1}
+.lr-expanded.open{display:block}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.detail-item{}
+.di-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.di-value{font-size:14px;color:var(--text);font-weight:500}
+
+/* ─ EMPTY / LOADING ─ */
+.empty-state,.loading-state{text-align:center;padding:60px;color:var(--muted)}
+.spinner{display:inline-block;width:36px;height:36px;border:3px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─ TOAST ─ */
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 22px;border-radius:14px;font-size:14px;font-weight:600;color:#fff;opacity:0;transform:translateY(8px);transition:all .3s;z-index:9999;pointer-events:none;max-width:340px}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+.toast.show{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  .sidebar{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap;padding:16px}
+  .sb-nav{flex-direction:row;padding:0}
+  .sb-badge,.sb-bottom{display:none}
+  .content{margin-left:0}
+  .listing-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">Bicholim <span>Connect</span></div>
+    <div class="login-sub">Admin Panel</div>
+    <div class="login-title">Sign In</div>
+    <br>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="lgUser" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="lgPass" placeholder="••••••••" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="loginErr"></div>
+    <div style="margin-top:20px;font-size:12px;color:#aaa;text-align:center">
+      Not an admin? <a href="index.html" style="color:var(--gold)">Go to Homepage →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <aside class="sidebar">
+    <div class="sb-logo">Bicholim <span>Connect</span></div>
+    <div class="sb-badge">Navigation</div>
+    <ul class="sb-nav">
+      <li><a href="#" class="active" onclick="showPage('pending',this)">⏳ Pending <span class="badge" id="pendingBadge">0</span></a></li>
+      <li><a href="#" onclick="showPage('approved',this)">✅ Approved</a></li>
+      <li><a href="#" onclick="showPage('rejected',this)">❌ Rejected</a></li>
+      <li><a href="#" onclick="showPage('all',this)">📋 All Listings</a></li>
+    </ul>
+    <div class="sb-bottom">
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="page-header">
+      <div class="page-title" id="pageTitle">Pending Review</div>
+      <div class="page-sub" id="pageSub">Listings waiting for your approval before going live.</div>
+    </div>
+
+    <div class="stats-row" id="statsRow"></div>
+
+    <div id="listingsArea">
+      <div class="loading-state"><div class="spinner"></div><p>Loading…</p></div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script>
+let allListings = [];
+let currentPage = 'pending';
+let adminToken  = '';
+
+const PAGE_META = {
+  pending:  { title:'Pending Review',  sub:'Listings waiting for your approval before going live.' },
+  approved: { title:'Approved Listings', sub:'Live listings visible to the public.' },
+  rejected: { title:'Rejected Listings', sub:'Listings that were not approved.' },
+  all:      { title:'All Listings',    sub:'Every submission across all statuses.' }
+};
+
+// ─ LOGIN ───────────────────────────────────────────────────
+async function doLogin() {
+  const user = document.getElementById('lgUser').value.trim();
+  const pass = document.getElementById('lgPass').value;
+  const btn  = document.getElementById('loginBtn');
+  const err  = document.getElementById('loginErr');
+
+  if (!user || !pass) { showLoginError('Please enter credentials.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+  err.style.display = 'none';
+
+  try {
+    const res = await BC_CONFIG.post('adminLogin', { username: user, password: pass });
+    if (res.success) {
+      adminToken = res.token;
+      BC_CONFIG.setToken(res.token);
+      enterPanel();
+    } else {
+      showLoginError(res.error || 'Invalid credentials.');
+    }
+  } catch(e) {
+    showLoginError('Could not connect to server. Check your API URL in config.js');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Sign In →';
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('loginErr');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+async function checkExistingSession() {
+  const token = BC_CONFIG.getToken();
+  if (!token) return;
+  try {
+    const res = await BC_CONFIG.get('verifySession', { token });
+    if (res.valid) {
+      adminToken = token;
+      enterPanel();
+    }
+  } catch(e) {}
+}
+
+function enterPanel() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  loadListings();
+}
+
+function logout() {
+  BC_CONFIG.clearToken();
+  location.reload();
+}
+
+// ─ DATA ────────────────────────────────────────────────────
+async function loadListings() {
+  try {
+    const res = await BC_CONFIG.get('getPending', { token: adminToken });
+    if (res.success) {
+      allListings = res.listings || [];
+      buildStats();
+      updateBadge();
+      renderPage();
+    } else {
+      if (res.error === 'Unauthorized.') { logout(); return; }
+      throw new Error(res.error);
+    }
+  } catch(e) {
+    document.getElementById('listingsArea').innerHTML =
+      `<div class="empty-state">⚠️ Error loading listings: ${e.message}</div>`;
+  }
+}
+
+function buildStats() {
+  const counts = { pending:0, approved:0, rejected:0 };
+  allListings.forEach(l => { if (counts[l.status] !== undefined) counts[l.status]++; });
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-card-icon">📋</div><div class="stat-card-num">${allListings.length}</div><div class="stat-card-label">Total Submissions</div></div>
+    <div class="stat-card"><div class="stat-card-icon">⏳</div><div class="stat-card-num">${counts.pending}</div><div class="stat-card-label">Pending Review</div></div>
+    <div class="stat-card"><div class="stat-card-icon">✅</div><div class="stat-card-num">${counts.approved}</div><div class="stat-card-label">Approved & Live</div></div>
+    <div class="stat-card"><div class="stat-card-icon">❌</div><div class="stat-card-num">${counts.rejected}</div><div class="stat-card-label">Rejected</div></div>
+  `;
+}
+
+function updateBadge() {
+  const n = allListings.filter(l => l.status === 'pending').length;
+  document.getElementById('pendingBadge').textContent = n;
+  document.getElementById('pendingBadge').style.display = n ? 'inline-block' : 'none';
+}
+
+function showPage(page, el) {
+  currentPage = page;
+  document.querySelectorAll('.sb-nav a').forEach(a => a.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('pageTitle').textContent = PAGE_META[page].title;
+  document.getElementById('pageSub').textContent   = PAGE_META[page].sub;
+  renderPage();
+}
+
+function renderPage() {
+  const filtered = currentPage === 'all'
+    ? allListings
+    : allListings.filter(l => l.status === currentPage);
+
+  const area = document.getElementById('listingsArea');
+
+  if (filtered.length === 0) {
+    area.innerHTML = `<div class="empty-state">🎉 Nothing here.</div>`;
+    return;
+  }
+
+  area.innerHTML = `<div class="listings-table">${filtered.map(l => listingRowHTML(l)).join('')}</div>`;
+}
+
+function listingRowHTML(l) {
+  const badgeClass = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' }[l.status] || '';
+  const label      = { pending:'⏳ Pending', approved:'✅ Live', rejected:'❌ Rejected' }[l.status] || l.status;
+  const date       = l.submittedAt ? new Date(l.submittedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '—';
+
+  const approveBtn = l.status !== 'approved'
+    ? `<button class="action-btn btn-approve" onclick="approve('${l.id}')">✅ Approve</button>` : '';
+  const rejectBtn  = l.status !== 'rejected'
+    ? `<button class="action-btn btn-reject"  onclick="reject('${l.id}')">❌ Reject</button>`  : '';
+  const deleteBtn  = `<button class="action-btn btn-delete" onclick="deleteListing('${l.id}')">🗑 Delete</button>`;
+  const expandBtn  = `<button class="action-btn btn-expand" onclick="toggleExpand('${l.id}')">🔍 Details</button>`;
+
+  return `
+    <div class="listing-row" id="row-${l.id}">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <div class="lr-name">${esc(l.name)}</div>
+          <span class="status-badge ${badgeClass}">${label}</span>
+        </div>
+        <div class="lr-meta">
+          <span>🏷 ${esc(l.serviceType)}</span>
+          <span>📂 ${esc(l.category)}</span>
+          <span>📞 ${esc(l.phone)}</span>
+          <span>📍 ${esc(l.location)}</span>
+          <span>📅 ${date}</span>
+          ${l.submittedBy ? `<span>📧 ${esc(l.submittedBy)}</span>` : ''}
+        </div>
+        <div class="lr-expanded" id="exp-${l.id}">
+          <div class="detail-grid">
+            <div class="detail-item"><div class="di-label">Full Name</div><div class="di-value">${esc(l.name)}</div></div>
+            <div class="detail-item"><div class="di-label">Phone</div><div class="di-value"><a href="tel:${l.phone}" style="color:var(--gold)">${l.phone}</a></div></div>
+            <div class="detail-item"><div class="di-label">WhatsApp</div><div class="di-value"><a href="https://wa.me/91${l.phone}" target="_blank" style="color:var(--gold)">Open Chat →</a></div></div>
+            <div class="detail-item"><div class="di-label">Service Type</div><div class="di-value">${esc(l.serviceType)}</div></div>
+            <div class="detail-item"><div class="di-label">Category</div><div class="di-value">${esc(l.category)}</div></div>
+            <div class="detail-item"><div class="di-label">Location</div><div class="di-value">${esc(l.location)}</div></div>
+            <div class="detail-item"><div class="di-label">Submitted By</div><div class="di-value">${esc(l.submittedBy||'—')}</div></div>
+            <div class="detail-item"><div class="di-label">Listing ID</div><div class="di-value" style="font-size:12px;opacity:.6">${l.id}</div></div>
+            ${l.description ? `<div class="detail-item" style="grid-column:1/-1"><div class="di-label">Description</div><div class="di-value">${esc(l.description)}</div></div>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="lr-actions">
+        ${expandBtn}
+        ${approveBtn}
+        ${rejectBtn}
+        ${deleteBtn}
+      </div>
+    </div>`;
+}
+
+function toggleExpand(id) {
+  const el = document.getElementById('exp-'+id);
+  el.classList.toggle('open');
+}
+
+// ─ ACTIONS ─────────────────────────────────────────────────
+async function approve(id) {
+  if (!confirm('Approve this listing? It will go live on the public site.')) return;
+  await doAction('approveListing', id, 'approved');
+}
+
+async function reject(id) {
+  if (!confirm('Reject this listing?')) return;
+  await doAction('rejectListing', id, 'rejected');
+}
+
+async function deleteListing(id) {
+  if (!confirm('Permanently delete this listing? This cannot be undone.')) return;
+  try {
+    const res = await BC_CONFIG.post('deleteListing', { token: adminToken, id });
+    if (res.success) {
+      allListings = allListings.filter(l => l.id !== id);
+      buildStats(); updateBadge(); renderPage();
+      toast('Listing deleted.', 'success');
+    } else { toast(res.error, 'error'); }
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function doAction(action, id, newStatus) {
+  try {
+    const res = await BC_CONFIG.post(action, { token: adminToken, id });
+    if (res.success) {
+      const l = allListings.find(x => x.id === id);
+      if (l) l.status = newStatus;
+      buildStats(); updateBadge(); renderPage();
+      toast(res.message, 'success');
+    } else { toast(res.error, 'error'); }
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ─ UTILS ───────────────────────────────────────────────────
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ─ INIT ────────────────────────────────────────────────────
+checkExistingSession();
+</script>
+</body>
+</html>

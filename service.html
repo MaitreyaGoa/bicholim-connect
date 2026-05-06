@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service — Bicholim Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1321;--navy-2:#1a2236;--navy-3:#253047;--gold:#c9a84c;--gold-light:#e8c96a;--gold-pale:rgba(201,168,76,0.12);--green:#16a34a;--green-pale:rgba(22,163,74,0.1);--cream:#f9f5ee;--text:#1a1a2e;--muted:#7a8499;--border:rgba(0,0,0,0.07);--white:#ffffff;--radius:18px;--radius-lg:28px}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text)}
+header{background:var(--navy);padding:18px 7%;border-bottom:1px solid rgba(201,168,76,.2);position:sticky;top:0;z-index:999}
+.navbar{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;text-decoration:none}
+.logo span{color:var(--gold)}
+.back-link{color:#9aa3b8;text-decoration:none;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;transition:color .25s}
+.back-link:hover{color:var(--gold)}
+
+.service-hero{background:var(--navy);padding:54px 7% 60px;position:relative;overflow:hidden}
+.service-hero::after{content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,.15),transparent 70%);top:-100px;right:-80px;border-radius:50%;pointer-events:none}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:#9aa3b8;margin-bottom:24px;position:relative}
+.breadcrumb a{color:var(--gold);text-decoration:none}
+.breadcrumb span{opacity:.4}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(34px,5vw,56px);font-weight:700;color:#fff;letter-spacing:-2px;line-height:1.1;margin-bottom:14px;position:relative}
+.hero-desc{font-size:16px;color:#9aa3b8;max-width:560px;line-height:1.7;font-weight:300;position:relative}
+.hero-pills{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;position:relative}
+.h-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 16px;font-size:13px;color:#c8d0e0;font-weight:500}
+
+.main{padding:50px 7%;display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start;max-width:1200px}
+
+/* ─ LISTINGS ─ */
+.listings-wrap{}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.sec-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:24px}
+.provider-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.05);transition:box-shadow .3s}
+.provider-card:hover{box-shadow:0 16px 40px rgba(0,0,0,.09)}
+.pc-head{padding:28px 28px 20px;border-bottom:1px solid var(--border)}
+.pc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.pc-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text)}
+.pc-cat{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);padding:4px 10px;border-radius:999px;margin-top:5px;display:inline-block}
+.pc-service{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px}
+.open-badge{display:inline-flex;align-items:center;gap:5px;background:var(--green-pale);border:1px solid rgba(22,163,74,.25);color:var(--green);font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px}
+.open-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pc-details{padding:0 28px}
+.pc-row{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.pc-row:last-child{border-bottom:none}
+.pc-row-icon{font-size:15px;flex-shrink:0;margin-top:2px}
+.pc-row-label{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.pc-row-val{font-size:15px;font-weight:500;color:var(--text)}
+.pc-row-val a{color:var(--text);text-decoration:none;transition:color .2s}
+.pc-row-val a:hover{color:var(--gold)}
+.pc-actions{padding:20px 28px 28px;display:flex;gap:10px}
+.pc-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s;text-decoration:none}
+.pc-btn-call{background:var(--navy);color:#fff}
+.pc-btn-call:hover{background:var(--navy-3)}
+.pc-btn-wa{background:#25d366;color:#fff}
+.pc-btn-wa:hover{background:#1fba57}
+
+/* ─ SIDEBAR ─ */
+.sidebar{display:flex;flex-direction:column;gap:20px}
+.side-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.side-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:16px;color:var(--text)}
+.tip-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.tip-list li{display:flex;align-items:flex-start;gap:9px;font-size:14px;color:#555;line-height:1.5}
+.tip-list li::before{content:'✦';color:var(--gold);font-size:9px;margin-top:5px;flex-shrink:0}
+.rel-links a{display:flex;align-items:center;justify-content:space-between;padding:10px 0;text-decoration:none;color:#555;font-size:14px;border-bottom:1px solid var(--border);transition:color .2s;font-weight:500}
+.rel-links a:last-child{border:none}
+.rel-links a:hover{color:var(--gold)}
+.rel-links a span{font-size:12px;opacity:.4}
+
+/* CTA */
+.cta-strip{background:var(--navy);border-radius:var(--radius-lg);padding:44px 50px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:32px;margin-top:40px;position:relative;overflow:hidden;grid-column:1/-1}
+.cta-strip::before{content:'';position:absolute;width:250px;height:250px;background:radial-gradient(circle,rgba(201,168,76,.2),transparent 70%);top:-60px;right:-40px;border-radius:50%}
+.cta-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,28px);font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.5px}
+.cta-desc{font-size:14px;color:#9aa3b8;line-height:1.6}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);text-decoration:none;padding:16px 24px;border-radius:var(--radius);font-weight:700;font-size:15px;font-family:'DM Sans',sans-serif;white-space:nowrap;position:relative;z-index:1;transition:background .3s,transform .3s}
+.cta-btn:hover{background:var(--gold-light);transform:scale(1.04)}
+
+.loading-state{text-align:center;padding:60px;color:var(--muted)}
+.spinner{display:inline-block;width:36px;height:36px;border:3px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:60px;color:var(--muted)}
+
+footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;border-top:1px solid rgba(255,255,255,.06);margin-top:20px}
+.footer-logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;font-weight:700}
+.footer-logo span{color:var(--gold)}
+
+@media(max-width:900px){.main{grid-template-columns:1fr}.cta-strip{grid-template-columns:1fr;padding:32px 24px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="logo">Bicholim <span>Connect</span></a>
+    <a href="index.html" class="back-link">← All Services</a>
+  </nav>
+</header>
+
+<div class="service-hero" id="serviceHero">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>/</span>
+    <span id="heroCategory">—</span>
+  </div>
+  <div class="hero-h1" id="heroTitle">Loading…</div>
+  <div class="hero-desc" id="heroDesc"></div>
+  <div class="hero-pills">
+    <div class="h-pill" id="heroPill1">📍 Bicholim, Goa</div>
+    <div class="h-pill" id="heroPill2">⏳ Loading…</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="listings-wrap">
+    <div class="sec-label">Listed Providers</div>
+    <div class="sec-title" id="listingsTitle">Services</div>
+    <div id="providersArea">
+      <div class="loading-state"><div class="spinner"></div><p>Loading providers…</p></div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="side-card">
+      <div class="side-title">💡 Before You Call</div>
+      <ul class="tip-list">
+        <li>Describe your requirement clearly for an accurate quote</li>
+        <li>Ask about callout or travel charges upfront</li>
+        <li>Check if after-hours rates apply</li>
+        <li>Request a receipt for all payments</li>
+        <li>Check reviews or ask neighbours for recommendations</li>
+      </ul>
+    </div>
+    <div class="side-card">
+      <div class="side-title">🔗 Other Categories</div>
+      <div class="rel-links" id="relLinks">
+        <a href="index.html">🚨 Emergency <span>→</span></a>
+        <a href="index.html">🏠 Home Services <span>→</span></a>
+        <a href="index.html">🔧 Repairs <span>→</span></a>
+        <a href="index.html">🚗 Transport <span>→</span></a>
+        <a href="index.html">🍔 Food & Daily <span>→</span></a>
+        <a href="index.html">🎓 Education <span>→</span></a>
+      </div>
+    </div>
+    <div class="side-card" style="background:var(--navy);border-color:transparent">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">List Your Business</div>
+      <div style="font-size:14px;color:#9aa3b8;line-height:1.6;margin-bottom:16px">Are you a service provider? Get listed on Bicholim Connect today.</div>
+      <a href="submit.html" style="display:block;text-align:center;background:var(--gold);color:var(--navy);text-decoration:none;padding:13px;border-radius:12px;font-weight:700;font-size:14px;transition:background .3s">+ Add Your Service</a>
+    </div>
+  </div>
+
+  <div class="cta-strip">
+    <div>
+      <div class="cta-label">For Businesses</div>
+      <div class="cta-title">Want to List Your Services?</div>
+      <p class="cta-desc">Join Bicholim Connect and get discovered by thousands of locals looking for trusted professionals.</p>
+    </div>
+    <a href="tel:7358425108" class="cta-btn">📞 73584 25108</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Bicholim <span>Connect</span></div>
+  <div style="font-size:13px">© 2026 Bicholim Connect · Local Services Platform</div>
+</footer>
+
+<script src="config.js"></script>
+<script>
+// Read URL params: service.html?category=home&title=Electricians
+const params   = new URLSearchParams(location.search);
+const catId    = params.get('category') || 'all';
+const catTitle = params.get('title')    || 'Services';
+
+const CATS = BC_CONFIG.CATEGORIES;
+const catObj = CATS.find(c => c.id === catId) || { label: catTitle, icon: '📋' };
+
+// Update hero
+document.getElementById('heroCategory').textContent = catObj.label;
+document.getElementById('heroTitle').textContent    = catTitle;
+document.getElementById('heroDesc').textContent     = `Find trusted ${catTitle.toLowerCase()} professionals in Bicholim — verified and ready to help.`;
+document.getElementById('listingsTitle').textContent = catTitle + ' in Bicholim';
+
+async function loadProviders() {
+  try {
+    const res = await BC_CONFIG.get('getListings', { category: catId });
+    if (!res.success) throw new Error(res.error);
+
+    const listings = res.listings || [];
+    document.getElementById('heroPill2').textContent = `${listings.length} Provider${listings.length !== 1 ? 's' : ''} Listed`;
+
+    const area = document.getElementById('providersArea');
+    if (listings.length === 0) {
+      area.innerHTML = `<div class="empty-state">
+        <div style="font-size:48px;margin-bottom:16px">${catObj.icon}</div>
+        <p>No ${catTitle.toLowerCase()} listed yet.</p>
+        <br><a href="submit.html" style="color:var(--gold);font-weight:600">Be the first to list your service →</a>
+      </div>`;
+      return;
+    }
+
+    area.innerHTML = listings.map(l => `
+      <div class="provider-card">
+        <div class="pc-head">
+          <div class="pc-top">
+            <div>
+              <div class="pc-name">${esc(l.name)}</div>
+              <span class="pc-cat">${catObj.label}</span>
+            </div>
+            <span class="open-badge"><span class="open-dot"></span> Available</span>
+          </div>
+          <div class="pc-service">${esc(l.serviceType)}</div>
+        </div>
+        <div class="pc-details">
+          <div class="pc-row"><span class="pc-row-icon">📞</span><div><div class="pc-row-label">Phone</div><div class="pc-row-val"><a href="tel:${l.phone}">${formatPhone(l.phone)}</a></div></div></div>
+          <div class="pc-row"><span class="pc-row-icon">📍</span><div><div class="pc-row-label">Location</div><div class="pc-row-val">${esc(l.location)}</div></div></div>
+          ${l.description ? `<div class="pc-row"><span class="pc-row-icon">📝</span><div><div class="pc-row-label">About</div><div class="pc-row-val">${esc(l.description)}</div></div></div>` : ''}
+        </div>
+        <div class="pc-actions">
+          <a href="tel:${l.phone}" class="pc-btn pc-btn-call">📞 Call Now</a>
+          <a href="https://wa.me/91${l.phone}" target="_blank" class="pc-btn pc-btn-wa">💬 WhatsApp</a>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('providersArea').innerHTML = `<div class="empty-state">⚠️ Could not load listings: ${e.message}</div>`;
+  }
+}
+
+function formatPhone(p) {
+  const s = String(p);
+  return s.length === 10 ? `${s.slice(0,5)} ${s.slice(5)}` : s;
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+loadProviders();
+</script>
+</body>
+</html>
