@@ -161,14 +161,14 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
         <label>Category <span class="req">*</span></label>
         <select id="fCategory">
           <option value="">— Select a category —</option>
-          <option value="emergency">🚨 Emergency</option>
-          <option value="home">🏠 Home Services</option>
-          <option value="repairs">🔧 Repairs</option>
-          <option value="transport">🚗 Transport</option>
-          <option value="food">🍔 Food & Daily Needs</option>
-          <option value="education">🎓 Education</option>
-          <option value="professional">💼 Professional</option>
-          <option value="other">🧰 Other</option>
+          <option value="emergency">🚨 Emergency &amp; Safety</option>
+          <option value="healthcare">🏥 Healthcare &amp; Wellness</option>
+          <option value="home">🏠 Home Maintenance &amp; Construction</option>
+          <option value="repairs">🔧 Appliance &amp; Technical Repairs</option>
+          <option value="transport">🚗 Vehicle &amp; Transport</option>
+          <option value="food">🍔 Food &amp; Daily Needs</option>
+          <option value="education">🎓 Education &amp; Learning</option>
+          <option value="professional">💼 Professional &amp; Business Services</option>
         </select>
         <span class="field-error" id="err-category">Please select a category.</span>
       </div>
@@ -260,7 +260,7 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
 //   2. Go to https://api.imgbb.com — click "Get API key"
 //   3. Copy the key and paste it below
 // ============================================================
-const IMGBB_API_KEY = '55419f9bf2fe729011aa9441d3d051ac'; // ← paste your key here
+const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY'; // ← paste your key here
 
 // ── STATE ──────────────────────────────────────────────────
 let uploadedImageUrl = ''; // set after successful ImgBB upload
