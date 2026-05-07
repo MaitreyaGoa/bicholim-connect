@@ -106,6 +106,7 @@ input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-pale)}
   .content{margin-left:0}
   .listing-row{grid-template-columns:1fr}
 }
+.admin-img{width:80px;height:80px;border-radius:12px;object-fit:cover;border:1px solid var(--border)}
 </style>
 </head>
 <body>
@@ -336,6 +337,7 @@ function listingRowHTML(l) {
             <div class="detail-item"><div class="di-label">Location</div><div class="di-value">${esc(l.location)}</div></div>
             <div class="detail-item"><div class="di-label">Submitted By</div><div class="di-value">${esc(l.submittedBy||'—')}</div></div>
             <div class="detail-item"><div class="di-label">Listing ID</div><div class="di-value" style="font-size:12px;opacity:.6">${l.id}</div></div>
+            ${l.imageUrl ? `<div class="detail-item"><div class="di-label">Logo / Image</div><div class="di-value"><img class="admin-img" src="${l.imageUrl}" alt="logo" onerror="this.style.display='none'"><br><a href="${l.imageUrl}" target="_blank" style="font-size:12px;color:var(--gold)">View full image →</a></div></div>` : ''}
             ${l.description ? `<div class="detail-item" style="grid-column:1/-1"><div class="di-label">Description</div><div class="di-value">${esc(l.description)}</div></div>` : ''}
           </div>
         </div>
