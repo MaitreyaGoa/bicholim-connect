@@ -107,6 +107,11 @@ input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-pale)}
   .listing-row{grid-template-columns:1fr}
 }
 .admin-img{width:80px;height:80px;border-radius:12px;object-fit:cover;border:1px solid var(--border)}
+.btn-img{background:rgba(201,168,76,.1);color:#7a5c1a;border:1px solid rgba(201,168,76,.3)}
+.btn-img:hover{background:#c9a84c;color:#fff}
+.img-input-wrap{display:none;margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.img-url-input{flex:1;padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:"DM Sans",sans-serif;outline:none;min-width:200px}
+.img-url-input:focus{border-color:var(--gold)}
 </style>
 </head>
 <body>
@@ -234,6 +239,28 @@ function enterPanel() {
   loadListings();
 }
 
+function toggleImgInput(id) {
+  const el = document.getElementById('imgInput-' + id);
+  if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+}
+
+async function saveImage(id) {
+  const url = document.getElementById('imgUrl-' + id).value.trim();
+  if (!url) { toast('Please paste an image URL first.', 'error'); return; }
+  try {
+    const res = await BC_CONFIG.call('updateListingImage', { token: adminToken, id, imageUrl: url });
+    if (res.success) {
+      toast('✅ Image saved! Reload to see it.', 'success');
+      // Update locally
+      const l = allListings.find(x => x.id === id);
+      if (l) l.imageUrl = url;
+      document.getElementById('imgInput-' + id).style.display = 'none';
+    } else {
+      toast(res.error, 'error');
+    }
+  } catch(e) { toast(e.message, 'error'); }
+}
+
 function logout() {
   BC_CONFIG.clearToken();
   location.reload();
@@ -310,6 +337,7 @@ function listingRowHTML(l) {
   const rejectBtn  = l.status !== 'rejected'
     ? `<button class="action-btn btn-reject"  onclick="reject('${l.id}')">❌ Reject</button>`  : '';
   const deleteBtn  = `<button class="action-btn btn-delete" onclick="deleteListing('${l.id}')">🗑 Delete</button>`;
+  const imgBtn     = `<button class="action-btn btn-img"    onclick="toggleImgInput('${l.id}')">🖼 Image</button>`;
   const expandBtn  = `<button class="action-btn btn-expand" onclick="toggleExpand('${l.id}')">🔍 Details</button>`;
 
   return `
@@ -337,7 +365,16 @@ function listingRowHTML(l) {
             <div class="detail-item"><div class="di-label">Location</div><div class="di-value">${esc(l.location)}</div></div>
             <div class="detail-item"><div class="di-label">Submitted By</div><div class="di-value">${esc(l.submittedBy||'—')}</div></div>
             <div class="detail-item"><div class="di-label">Listing ID</div><div class="di-value" style="font-size:12px;opacity:.6">${l.id}</div></div>
-            ${l.imageUrl ? `<div class="detail-item"><div class="di-label">Logo / Image</div><div class="di-value"><img class="admin-img" src="${l.imageUrl}" alt="logo" onerror="this.style.display='none'"><br><a href="${l.imageUrl}" target="_blank" style="font-size:12px;color:var(--gold)">View full image →</a></div></div>` : ''}
+            <div class="detail-item">
+              <div class="di-label">Logo / Image</div>
+              <div class="di-value">
+                ${l.imageUrl ? `<img class="admin-img" src="${l.imageUrl}" alt="logo" onerror="this.style.display='none'"><br><a href="${l.imageUrl}" target="_blank" style="font-size:12px;color:var(--gold)">View full →</a>` : '<span style="color:var(--muted);font-size:13px">No image set</span>'}
+                <div style="margin-top:10px;display:none" id="imgInput-${l.id}">
+                  <input class="img-url-input" type="text" id="imgUrl-${l.id}" placeholder="Paste ImgBB or any image URL here…">
+                  <button class="action-btn btn-approve" onclick="saveImage('${l.id}')">💾 Save Image</button>
+                </div>
+              </div>
+            </div>
             ${l.description ? `<div class="detail-item" style="grid-column:1/-1"><div class="di-label">Description</div><div class="di-value">${esc(l.description)}</div></div>` : ''}
           </div>
         </div>
@@ -347,6 +384,7 @@ function listingRowHTML(l) {
         ${approveBtn}
         ${rejectBtn}
         ${deleteBtn}
+        ${imgBtn}
       </div>
     </div>`;
 }
