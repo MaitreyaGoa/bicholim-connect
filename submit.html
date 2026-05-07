@@ -6,7 +6,7 @@
 <title>List Your Business — Bicholim Connect</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0d1321;--navy-2:#1a2236;--navy-3:#253047;--gold:#c9a84c;--gold-light:#e8c96a;--gold-pale:rgba(201,168,76,0.12);--cream:#f9f5ee;--text:#1a1a2e;--muted:#7a8499;--border:rgba(0,0,0,0.08);--white:#ffffff;--radius:16px;--radius-lg:28px}
+:root{--navy:#0d1321;--navy-2:#1a2236;--navy-3:#253047;--gold:#c9a84c;--gold-light:#e8c96a;--gold-pale:rgba(201,168,76,0.12);--cream:#f9f5ee;--text:#1a1a2e;--muted:#7a8499;--border:rgba(0,0,0,0.08);--white:#ffffff;--radius:16px;--radius-lg:28px;--green:#16a34a;--red:#dc2626}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text)}
 header{background:var(--navy);padding:18px 7%;border-bottom:1px solid rgba(201,168,76,0.2)}
@@ -38,7 +38,6 @@ header{background:var(--navy);padding:18px 7%;border-bottom:1px solid rgba(201,1
 .form-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:40px;box-shadow:0 8px 32px rgba(0,0,0,0.05)}
 .form-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
 .form-sub{font-size:14px;color:var(--muted);margin-bottom:32px}
-
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .form-group{display:flex;flex-direction:column;gap:7px}
 .form-group.full{grid-column:1/-1}
@@ -48,9 +47,33 @@ input,select,textarea{padding:14px 16px;border:1.5px solid var(--border);border-
 input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-pale)}
 textarea{resize:vertical;min-height:100px}
 .field-hint{font-size:12px;color:var(--muted)}
-.field-error{font-size:12px;color:#dc2626;display:none}
-.form-group.has-error input,.form-group.has-error select{border-color:#dc2626}
+.field-error{font-size:12px;color:var(--red);display:none}
+.form-group.has-error input,.form-group.has-error select{border-color:var(--red)}
 .form-group.has-error .field-error{display:block}
+
+/* IMAGE UPLOAD */
+.img-upload-box{border:2px dashed var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .25s,background .25s;background:#fafafa;cursor:pointer;position:relative}
+.img-upload-box:hover{border-color:var(--gold);background:var(--gold-pale)}
+.img-upload-box.has-image{border-style:solid;border-color:rgba(201,168,76,.4);background:#fff;cursor:default}
+.img-upload-box.uploading{border-color:var(--gold);background:var(--gold-pale);cursor:wait}
+.img-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2}
+.img-upload-input:disabled{cursor:wait}
+.img-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;gap:8px;pointer-events:none}
+.img-prompt-icon{font-size:36px}
+.img-prompt-title{font-size:14px;font-weight:700;color:var(--text)}
+.img-prompt-hint{font-size:12px;color:var(--muted);text-align:center}
+.img-preview-wrap{display:none;position:relative}
+.img-preview-wrap img{width:100%;max-height:220px;object-fit:contain;display:block;background:#f5f5f5}
+.img-preview-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-top:1px solid var(--border)}
+.img-preview-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.img-remove-btn{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);color:var(--red);border-radius:10px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.img-remove-btn:hover{background:var(--red);color:#fff}
+.img-status{font-size:12px;font-weight:600;margin-top:6px;min-height:18px;display:flex;align-items:center;gap:6px}
+.img-status.uploading{color:#d97706}
+.img-status.success{color:var(--green)}
+.img-status.error{color:var(--red)}
+.img-progress-wrap{height:4px;background:rgba(201,168,76,.15);border-radius:4px;margin-top:6px;overflow:hidden;display:none}
+.img-progress-bar{height:100%;background:var(--gold);border-radius:4px;width:0%;transition:width .3s}
 
 .form-actions{margin-top:28px;display:flex;justify-content:flex-end;gap:14px;flex-wrap:wrap}
 .btn{padding:15px 28px;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s}
@@ -75,9 +98,7 @@ textarea{resize:vertical;min-height:100px}
 footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid rgba(255,255,255,0.06);margin-top:40px}
 .footer-logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;font-weight:700}
 .footer-logo span{color:var(--gold)}
-
 @media(max-width:640px){.form-grid{grid-template-columns:1fr}.steps::before{display:none}}
-
 </style>
 </head>
 <body>
@@ -92,25 +113,16 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
 <div class="page-hero">
   <div class="page-hero-label">For Businesses & Professionals</div>
   <h1>List Your Service</h1>
-  <p>Submit your details below. Your listing will go live on the platform after admin verification — usually within 24 hours.</p>
+  <p>Submit your details below. Your listing will go live after admin verification — usually within 24 hours.</p>
 </div>
 
 <div class="main">
 
   <!-- STEPS -->
   <div class="steps">
-    <div class="step active" id="step1">
-      <div class="step-num">1</div>
-      <div class="step-label">Your Details</div>
-    </div>
-    <div class="step" id="step2">
-      <div class="step-num">2</div>
-      <div class="step-label">Review</div>
-    </div>
-    <div class="step" id="step3">
-      <div class="step-num">✓</div>
-      <div class="step-label">Submitted</div>
-    </div>
+    <div class="step active" id="step1"><div class="step-num">1</div><div class="step-label">Your Details</div></div>
+    <div class="step"        id="step2"><div class="step-num">2</div><div class="step-label">Submitting</div></div>
+    <div class="step"        id="step3"><div class="step-num">✓</div><div class="step-label">Done!</div></div>
   </div>
 
   <!-- FORM -->
@@ -118,11 +130,11 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
 
     <div class="info-box">
       <span class="info-box-icon">ℹ️</span>
-      <div class="info-box-text">Your listing will be reviewed by the Bicholim Connect admin team before it goes live. This usually takes less than 24 hours. We'll make sure only genuine local businesses are listed.</div>
+      <div class="info-box-text">Your listing will be reviewed by our admin team before going live. This usually takes less than 24 hours.</div>
     </div>
 
     <div class="form-title">Business Information</div>
-    <div class="form-sub">Fill in your details below. Fields marked <span style="color:var(--gold)">*</span> are required.</div>
+    <div class="form-sub">Fields marked <span style="color:var(--gold)">*</span> are required.</div>
 
     <div class="form-grid">
 
@@ -161,19 +173,51 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
         <span class="field-error" id="err-category">Please select a category.</span>
       </div>
 
-      <div class="form-group full" id="fg-location">
+      <div class="form-group full">
         <label>Location / Area</label>
         <input type="text" id="fLocation" placeholder="e.g. Bicholim Market, near Main Road" maxlength="120" value="Bicholim, Goa">
       </div>
 
       <div class="form-group full">
-        <label>Email (optional — for notifications)</label>
+        <label>Email <span style="color:var(--muted);font-weight:400">(optional — for notifications)</span></label>
         <input type="email" id="fEmail" placeholder="your@email.com">
       </div>
 
+      <!-- IMAGE UPLOAD — uses ImgBB API, no size limits, works on all browsers -->
       <div class="form-group full">
-        <label>Short Description (optional)</label>
-        <textarea id="fDesc" placeholder="Tell customers what you offer, your experience, working hours, etc." maxlength="300"></textarea>
+        <label>Business Logo / Photo <span style="color:var(--muted);font-weight:400">(optional — any size)</span></label>
+
+        <div class="img-upload-box" id="imgBox">
+          <input type="file" class="img-upload-input" id="fImage"
+                 accept="image/*" onchange="handleImagePick(this)">
+
+          <!-- Prompt shown before image is picked -->
+          <div class="img-prompt" id="imgPrompt">
+            <div class="img-prompt-icon">🖼️</div>
+            <div class="img-prompt-title">Click to upload your logo or photo</div>
+            <div class="img-prompt-hint">Any image format · Any size · JPG, PNG, WEBP, GIF supported</div>
+          </div>
+
+          <!-- Preview shown after image picked -->
+          <div class="img-preview-wrap" id="imgPreviewWrap">
+            <img id="imgPreview" src="" alt="Preview">
+            <div class="img-preview-bar">
+              <span class="img-preview-name" id="imgFileName">—</span>
+              <button type="button" class="img-remove-btn" onclick="removeImage()">✕ Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status line below the box -->
+        <div class="img-status" id="imgStatus"></div>
+        <div class="img-progress-wrap" id="imgProgressWrap">
+          <div class="img-progress-bar" id="imgProgressBar"></div>
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label>Short Description <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+        <textarea id="fDesc" placeholder="Tell customers what you offer, your working hours, experience, etc." maxlength="300"></textarea>
         <span class="field-hint"><span id="charCount">0</span>/300 characters</span>
       </div>
 
@@ -184,13 +228,13 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
       <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">Submit for Review →</button>
     </div>
 
-  </div>
+  </div><!-- /form-card -->
 
-  <!-- SUCCESS -->
+  <!-- SUCCESS STATE -->
   <div class="success-state" id="successSection">
     <span class="success-icon">🎉</span>
     <div class="success-title">Listing Submitted!</div>
-    <p class="success-msg">Your business has been submitted for review. The Bicholim Connect admin will verify your details and your listing will go live within 24 hours.</p>
+    <p class="success-msg">Your business has been submitted for review. The admin will verify your details and your listing will go live within 24 hours.</p>
     <div class="success-id" id="successId">Reference ID: —</div>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
       <a href="index.html" class="btn btn-primary">Back to Homepage</a>
@@ -198,7 +242,7 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
     </div>
   </div>
 
-</div>
+</div><!-- /main -->
 
 <footer>
   <div class="footer-logo">Bicholim <span>Connect</span></div>
@@ -207,42 +251,183 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
 
 <script src="config.js"></script>
 <script>
-// Char counter
+// ============================================================
+// ImgBB Configuration
+// ============================================================
+// FREE image hosting — no size limits, images stored permanently.
+// Steps to get your API key:
+//   1. Go to https://imgbb.com and create a free account
+//   2. Go to https://api.imgbb.com — click "Get API key"
+//   3. Copy the key and paste it below
+// ============================================================
+const IMGBB_API_KEY = '55419f9bf2fe729011aa9441d3d051ac'; // ← paste your key here
+
+// ── STATE ──────────────────────────────────────────────────
+let uploadedImageUrl = ''; // set after successful ImgBB upload
+let selectedFile     = null;
+let isUploading      = false;
+
+// ── CHAR COUNTER ───────────────────────────────────────────
 document.getElementById('fDesc').addEventListener('input', function() {
   document.getElementById('charCount').textContent = this.value.length;
 });
 
+// ── STEPS ──────────────────────────────────────────────────
 function setStep(n) {
   [1,2,3].forEach(i => {
     const el = document.getElementById('step'+i);
     el.classList.remove('active','done');
-    if (i < n) el.classList.add('done');
+    if (i < n)      el.classList.add('done');
     else if (i === n) el.classList.add('active');
   });
 }
 
+// ── IMAGE PICK ─────────────────────────────────────────────
+function handleImagePick(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  selectedFile     = file;
+  uploadedImageUrl = '';
+
+  // Show local preview immediately
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('imgPreview').src    = e.target.result;
+    document.getElementById('imgFileName').textContent = file.name;
+    document.getElementById('imgPrompt').style.display      = 'none';
+    document.getElementById('imgPreviewWrap').style.display = 'block';
+    document.getElementById('imgBox').classList.add('has-image');
+    // Disable file input while uploading
+    document.getElementById('fImage').disabled = true;
+    // Auto-upload to ImgBB right away
+    uploadToImgBB(file);
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── IMGBB UPLOAD ───────────────────────────────────────────
+function uploadToImgBB(file) {
+  if (!IMGBB_API_KEY || IMGBB_API_KEY === 'YOUR_IMGBB_API_KEY') {
+    // No API key set — skip image upload, listing will submit without image
+    setImgStatus('⚠️ No ImgBB API key set — listing will be saved without image.', 'error');
+    document.getElementById('fImage').disabled = false;
+    return;
+  }
+
+  isUploading = true;
+  setImgStatus('⏳ Uploading image…', 'uploading');
+  showProgress(true);
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const xhr = new XMLHttpRequest();
+
+  // Progress bar
+  xhr.upload.addEventListener('progress', function(e) {
+    if (e.lengthComputable) {
+      const pct = Math.round((e.loaded / e.total) * 100);
+      document.getElementById('imgProgressBar').style.width = pct + '%';
+    }
+  });
+
+  xhr.addEventListener('load', function() {
+    isUploading = false;
+    showProgress(false);
+    document.getElementById('fImage').disabled = false;
+
+    try {
+      const res = JSON.parse(xhr.responseText);
+      if (res.success) {
+        uploadedImageUrl = res.data.url;
+        setImgStatus('✅ Image uploaded successfully!', 'success');
+        document.getElementById('imgBox').classList.remove('uploading');
+      } else {
+        setImgStatus('⚠️ Upload failed: ' + (res.error && res.error.message || 'Unknown error') + '. Listing will be saved without image.', 'error');
+      }
+    } catch(e) {
+      setImgStatus('⚠️ Upload response error. Listing will be saved without image.', 'error');
+    }
+  });
+
+  xhr.addEventListener('error', function() {
+    isUploading = false;
+    showProgress(false);
+    document.getElementById('fImage').disabled = false;
+    setImgStatus('⚠️ Network error during upload. Listing will be saved without image.', 'error');
+  });
+
+  xhr.open('POST', 'https://api.imgbb.com/1/upload?key=' + IMGBB_API_KEY);
+  xhr.send(formData);
+
+  document.getElementById('imgBox').classList.add('uploading');
+}
+
+// ── REMOVE IMAGE ───────────────────────────────────────────
+function removeImage() {
+  selectedFile     = null;
+  uploadedImageUrl = '';
+  isUploading      = false;
+
+  document.getElementById('fImage').value   = '';
+  document.getElementById('fImage').disabled = false;
+  document.getElementById('imgPreview').src  = '';
+  document.getElementById('imgFileName').textContent = '—';
+
+  document.getElementById('imgPrompt').style.display      = 'block';
+  document.getElementById('imgPreviewWrap').style.display = 'none';
+  document.getElementById('imgBox').classList.remove('has-image','uploading');
+
+  setImgStatus('', '');
+  showProgress(false);
+  document.getElementById('imgProgressBar').style.width = '0%';
+}
+
+// ── UI HELPERS ─────────────────────────────────────────────
+function setImgStatus(msg, type) {
+  const el = document.getElementById('imgStatus');
+  el.textContent  = msg;
+  el.className    = 'img-status' + (type ? ' ' + type : '');
+}
+
+function showProgress(show) {
+  document.getElementById('imgProgressWrap').style.display = show ? 'block' : 'none';
+}
+
+// ── VALIDATION ─────────────────────────────────────────────
 function validate() {
   let valid = true;
   const fields = [
-    { id:'fName',     group:'fg-name',     err:'err-name',     check: v => v.trim().length >= 2 },
-    { id:'fPhone',    group:'fg-phone',    err:'err-phone',    check: v => /^\d{10,15}$/.test(v.replace(/\D/g,'')) && v.replace(/\D/g,'').length >= 10 },
-    { id:'fService',  group:'fg-service',  err:'err-service',  check: v => v.trim().length >= 2 },
-    { id:'fCategory', group:'fg-category', err:'err-category', check: v => v !== '' }
+    { id:'fName',     group:'fg-name',     err:'err-name',
+      check: v => v.trim().length >= 2 },
+    { id:'fPhone',    group:'fg-phone',    err:'err-phone',
+      check: v => v.replace(/\D/g,'').length >= 10 },
+    { id:'fService',  group:'fg-service',  err:'err-service',
+      check: v => v.trim().length >= 2 },
+    { id:'fCategory', group:'fg-category', err:'err-category',
+      check: v => v !== '' }
   ];
   fields.forEach(f => {
-    const val = document.getElementById(f.id).value;
-    const ok  = f.check(val);
+    const ok = f.check(document.getElementById(f.id).value);
     document.getElementById(f.group).classList.toggle('has-error', !ok);
     if (!ok) valid = false;
   });
   return valid;
 }
 
+// ── SUBMIT ─────────────────────────────────────────────────
 async function submitForm() {
   if (!validate()) return;
 
+  // If image is still uploading, wait for it
+  if (isUploading) {
+    alert('Please wait — your image is still uploading.');
+    return;
+  }
+
   const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
+  btn.disabled    = true;
   btn.textContent = 'Submitting…';
   setStep(2);
 
@@ -253,27 +438,28 @@ async function submitForm() {
     category:    document.getElementById('fCategory').value,
     location:    document.getElementById('fLocation').value.trim(),
     email:       document.getElementById('fEmail').value.trim(),
-    description: document.getElementById('fDesc').value.trim()
+    description: document.getElementById('fDesc').value.trim(),
+    imageUrl:    uploadedImageUrl  // empty string if no image or upload failed
   };
 
   try {
     const res = await BC_CONFIG.post('submitListing', payload);
     if (!res.success) throw new Error(res.error || 'Submission failed.');
 
-    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('formSection').style.display  = 'none';
     document.getElementById('successSection').style.display = 'block';
     document.getElementById('successId').textContent = 'Reference ID: ' + res.id;
     setStep(3);
 
   } catch(e) {
     alert('Error: ' + e.message);
-    btn.disabled = false;
+    btn.disabled    = false;
     btn.textContent = 'Submit for Review →';
     setStep(1);
   }
 }
 
-// Clear errors on input
+// Clear validation errors on input
 document.querySelectorAll('input,select').forEach(el => {
   el.addEventListener('input', () => {
     const fg = el.closest('.form-group');
