@@ -3,94 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Service — Bicholim Connect</title>
+<title>List Your Business — Bicholim Connect</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0d1321;--navy-2:#1a2236;--navy-3:#253047;--gold:#c9a84c;--gold-light:#e8c96a;--gold-pale:rgba(201,168,76,0.12);--green:#16a34a;--green-pale:rgba(22,163,74,0.1);--cream:#f9f5ee;--text:#1a1a2e;--muted:#7a8499;--border:rgba(0,0,0,0.07);--white:#ffffff;--radius:18px;--radius-lg:28px}
+:root{--navy:#0d1321;--navy-2:#1a2236;--navy-3:#253047;--gold:#c9a84c;--gold-light:#e8c96a;--gold-pale:rgba(201,168,76,0.12);--cream:#f9f5ee;--text:#1a1a2e;--muted:#7a8499;--border:rgba(0,0,0,0.08);--white:#ffffff;--radius:16px;--radius-lg:28px}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text)}
-header{background:var(--navy);padding:18px 7%;border-bottom:1px solid rgba(201,168,76,.2);position:sticky;top:0;z-index:999}
+header{background:var(--navy);padding:18px 7%;border-bottom:1px solid rgba(201,168,76,0.2)}
 .navbar{display:flex;justify-content:space-between;align-items:center}
 .logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;text-decoration:none}
 .logo span{color:var(--gold)}
-.back-link{color:#9aa3b8;text-decoration:none;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;transition:color .25s}
+.back-link{color:#9aa3b8;text-decoration:none;font-size:14px;font-weight:500;transition:color .25s}
 .back-link:hover{color:var(--gold)}
 
-.service-hero{background:var(--navy);padding:54px 7% 60px;position:relative;overflow:hidden}
-.service-hero::after{content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,.15),transparent 70%);top:-100px;right:-80px;border-radius:50%;pointer-events:none}
-.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:#9aa3b8;margin-bottom:24px;position:relative}
-.breadcrumb a{color:var(--gold);text-decoration:none}
-.breadcrumb span{opacity:.4}
-.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(34px,5vw,56px);font-weight:700;color:#fff;letter-spacing:-2px;line-height:1.1;margin-bottom:14px;position:relative}
-.hero-desc{font-size:16px;color:#9aa3b8;max-width:560px;line-height:1.7;font-weight:300;position:relative}
-.hero-pills{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;position:relative}
-.h-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 16px;font-size:13px;color:#c8d0e0;font-weight:500}
+.page-hero{background:var(--navy);padding:56px 7% 60px;position:relative;overflow:hidden}
+.page-hero::after{content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,.15),transparent 70%);top:-100px;right:-80px;border-radius:50%}
+.page-hero-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,52px);font-weight:700;color:#fff;letter-spacing:-1.5px;line-height:1.15;margin-bottom:14px;position:relative}
+.page-hero p{font-size:16px;color:#9aa3b8;max-width:540px;line-height:1.7;position:relative}
 
-.main{padding:50px 7%;display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start;max-width:1200px}
+.main{padding:56px 7%;max-width:900px}
 
-/* ─ LISTINGS ─ */
-.listings-wrap{}
-.sec-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.sec-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:24px}
-.provider-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.05);transition:box-shadow .3s}
-.provider-card:hover{box-shadow:0 16px 40px rgba(0,0,0,.09)}
-.pc-head{padding:28px 28px 20px;border-bottom:1px solid var(--border)}
-.pc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
-.pc-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text)}
-.pc-cat{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);padding:4px 10px;border-radius:999px;margin-top:5px;display:inline-block}
-.pc-service{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px}
-.open-badge{display:inline-flex;align-items:center;gap:5px;background:var(--green-pale);border:1px solid rgba(22,163,74,.25);color:var(--green);font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px}
-.open-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.pc-details{padding:0 28px}
-.pc-row{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
-.pc-row:last-child{border-bottom:none}
-.pc-row-icon{font-size:15px;flex-shrink:0;margin-top:2px}
-.pc-row-label{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-.pc-row-val{font-size:15px;font-weight:500;color:var(--text)}
-.pc-row-val a{color:var(--text);text-decoration:none;transition:color .2s}
-.pc-row-val a:hover{color:var(--gold)}
-.pc-actions{padding:20px 28px 28px;display:flex;gap:10px}
-.pc-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s;text-decoration:none}
-.pc-btn-call{background:var(--navy);color:#fff}
-.pc-btn-call:hover{background:var(--navy-3)}
-.pc-btn-wa{background:#25d366;color:#fff}
-.pc-btn-wa:hover{background:#1fba57}
+/* STEPS */
+.steps{display:flex;gap:0;margin-bottom:48px;position:relative}
+.steps::before{content:'';position:absolute;top:22px;left:22px;right:22px;height:2px;background:var(--border);z-index:0}
+.step{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;position:relative;z-index:1}
+.step-num{width:44px;height:44px;border-radius:50%;border:2px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--muted);transition:all .3s}
+.step.active .step-num{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.step.done .step-num{background:var(--navy);border-color:var(--navy);color:#fff}
+.step-label{font-size:12px;font-weight:600;color:var(--muted);text-align:center}
+.step.active .step-label{color:var(--text)}
 
-/* ─ SIDEBAR ─ */
-.sidebar{display:flex;flex-direction:column;gap:20px}
-.side-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;box-shadow:0 4px 16px rgba(0,0,0,.04)}
-.side-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:16px;color:var(--text)}
-.tip-list{list-style:none;display:flex;flex-direction:column;gap:9px}
-.tip-list li{display:flex;align-items:flex-start;gap:9px;font-size:14px;color:#555;line-height:1.5}
-.tip-list li::before{content:'✦';color:var(--gold);font-size:9px;margin-top:5px;flex-shrink:0}
-.rel-links a{display:flex;align-items:center;justify-content:space-between;padding:10px 0;text-decoration:none;color:#555;font-size:14px;border-bottom:1px solid var(--border);transition:color .2s;font-weight:500}
-.rel-links a:last-child{border:none}
-.rel-links a:hover{color:var(--gold)}
-.rel-links a span{font-size:12px;opacity:.4}
+/* FORM CARD */
+.form-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:40px;box-shadow:0 8px 32px rgba(0,0,0,0.05)}
+.form-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
+.form-sub{font-size:14px;color:var(--muted);margin-bottom:32px}
 
-/* CTA */
-.cta-strip{background:var(--navy);border-radius:var(--radius-lg);padding:44px 50px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:32px;margin-top:40px;position:relative;overflow:hidden;grid-column:1/-1}
-.cta-strip::before{content:'';position:absolute;width:250px;height:250px;background:radial-gradient(circle,rgba(201,168,76,.2),transparent 70%);top:-60px;right:-40px;border-radius:50%}
-.cta-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.cta-title{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,28px);font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.5px}
-.cta-desc{font-size:14px;color:#9aa3b8;line-height:1.6}
-.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);text-decoration:none;padding:16px 24px;border-radius:var(--radius);font-weight:700;font-size:15px;font-family:'DM Sans',sans-serif;white-space:nowrap;position:relative;z-index:1;transition:background .3s,transform .3s}
-.cta-btn:hover{background:var(--gold-light);transform:scale(1.04)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-group{display:flex;flex-direction:column;gap:7px}
+.form-group.full{grid-column:1/-1}
+label{font-size:13px;font-weight:700;letter-spacing:0.3px;color:var(--text)}
+label .req{color:var(--gold)}
+input,select,textarea{padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);background:#fff;outline:none;transition:border-color .25s,box-shadow .25s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-pale)}
+textarea{resize:vertical;min-height:100px}
+.field-hint{font-size:12px;color:var(--muted)}
+.field-error{font-size:12px;color:#dc2626;display:none}
+.form-group.has-error input,.form-group.has-error select{border-color:#dc2626}
+.form-group.has-error .field-error{display:block}
 
-.loading-state{text-align:center;padding:60px;color:var(--muted)}
-.spinner{display:inline-block;width:36px;height:36px;border:3px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.empty-state{text-align:center;padding:60px;color:var(--muted)}
+.form-actions{margin-top:28px;display:flex;justify-content:flex-end;gap:14px;flex-wrap:wrap}
+.btn{padding:15px 28px;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .25s}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy-2)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--navy)}
 
-footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;border-top:1px solid rgba(255,255,255,.06);margin-top:20px}
+/* SUCCESS */
+.success-state{text-align:center;padding:60px 20px;display:none}
+.success-icon{font-size:64px;margin-bottom:20px;display:block}
+.success-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;margin-bottom:12px;letter-spacing:-1px}
+.success-msg{font-size:16px;color:var(--muted);line-height:1.7;max-width:460px;margin:0 auto 28px}
+.success-id{background:var(--gold-pale);border:1px solid rgba(201,168,76,.3);border-radius:12px;padding:14px 20px;font-size:13px;color:#7a5c1a;font-weight:600;display:inline-block;margin-bottom:28px}
+
+/* INFO BOX */
+.info-box{background:var(--gold-pale);border:1px solid rgba(201,168,76,.25);border-radius:var(--radius);padding:16px 20px;display:flex;gap:12px;align-items:flex-start;margin-bottom:28px}
+.info-box-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+.info-box-text{font-size:14px;color:#6b5300;line-height:1.6}
+
+footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid rgba(255,255,255,0.06);margin-top:40px}
 .footer-logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;font-weight:700}
 .footer-logo span{color:var(--gold)}
 
-@media(max-width:900px){.main{grid-template-columns:1fr}.cta-strip{grid-template-columns:1fr;padding:32px 24px}}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}.steps::before{display:none}}
 
-.pc-logo{width:72px;height:72px;border-radius:16px;object-fit:cover;border:1px solid var(--border);background:#f5f5f5;flex-shrink:0}
-.pc-logo-placeholder{width:72px;height:72px;border-radius:16px;background:var(--gold-pale);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
+/* IMAGE UPLOAD */
+.image-upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:all .25s;background:#fafafa;position:relative}
+.image-upload-area:hover,.image-upload-area.dragover{border-color:var(--gold);background:var(--gold-pale)}
+.image-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:32px;margin-bottom:8px}
+.upload-label{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.upload-hint{font-size:12px;color:var(--muted)}
+.image-preview{display:none;position:relative;margin-top:14px}
+.image-preview img{width:100%;max-height:180px;object-fit:contain;border-radius:var(--radius);border:1px solid var(--border);background:#f5f5f5}
+.remove-img{position:absolute;top:8px;right:8px;background:#fff;border:1px solid var(--border);border-radius:999px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .25s}
+.remove-img:hover{background:#fee2e2;border-color:#dc2626}
 </style>
 </head>
 <body>
@@ -98,153 +96,344 @@ footer{background:var(--navy);color:#9aa3b8;padding:28px 7%;display:flex;justify
 <header>
   <nav class="navbar">
     <a href="index.html" class="logo">Bicholim <span>Connect</span></a>
-    <a href="index.html" class="back-link">← All Services</a>
+    <a href="index.html" class="back-link">← Back to Listings</a>
   </nav>
 </header>
 
-<div class="service-hero" id="serviceHero">
-  <div class="breadcrumb">
-    <a href="index.html">Home</a>
-    <span>/</span>
-    <span id="heroCategory">—</span>
-  </div>
-  <div class="hero-h1" id="heroTitle">Loading…</div>
-  <div class="hero-desc" id="heroDesc"></div>
-  <div class="hero-pills">
-    <div class="h-pill" id="heroPill1">📍 Bicholim, Goa</div>
-    <div class="h-pill" id="heroPill2">⏳ Loading…</div>
-  </div>
+<div class="page-hero">
+  <div class="page-hero-label">For Businesses & Professionals</div>
+  <h1>List Your Service</h1>
+  <p>Submit your details below. Your listing will go live on the platform after admin verification — usually within 24 hours.</p>
 </div>
 
 <div class="main">
-  <div class="listings-wrap">
-    <div class="sec-label">Listed Providers</div>
-    <div class="sec-title" id="listingsTitle">Services</div>
-    <div id="providersArea">
-      <div class="loading-state"><div class="spinner"></div><p>Loading providers…</p></div>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step active" id="step1">
+      <div class="step-num">1</div>
+      <div class="step-label">Your Details</div>
+    </div>
+    <div class="step" id="step2">
+      <div class="step-num">2</div>
+      <div class="step-label">Review</div>
+    </div>
+    <div class="step" id="step3">
+      <div class="step-num">✓</div>
+      <div class="step-label">Submitted</div>
     </div>
   </div>
 
-  <div class="sidebar">
-    <div class="side-card">
-      <div class="side-title">💡 Before You Call</div>
-      <ul class="tip-list">
-        <li>Describe your requirement clearly for an accurate quote</li>
-        <li>Ask about callout or travel charges upfront</li>
-        <li>Check if after-hours rates apply</li>
-        <li>Request a receipt for all payments</li>
-        <li>Check reviews or ask neighbours for recommendations</li>
-      </ul>
+  <!-- FORM -->
+  <div class="form-card" id="formSection">
+
+    <div class="info-box">
+      <span class="info-box-icon">ℹ️</span>
+      <div class="info-box-text">Your listing will be reviewed by the Bicholim Connect admin team before it goes live. This usually takes less than 24 hours. We'll make sure only genuine local businesses are listed.</div>
     </div>
-    <div class="side-card">
-      <div class="side-title">🔗 Other Categories</div>
-      <div class="rel-links" id="relLinks">
-        <a href="index.html">🚨 Emergency <span>→</span></a>
-        <a href="index.html">🏠 Home Services <span>→</span></a>
-        <a href="index.html">🔧 Repairs <span>→</span></a>
-        <a href="index.html">🚗 Transport <span>→</span></a>
-        <a href="index.html">🍔 Food & Daily <span>→</span></a>
-        <a href="index.html">🎓 Education <span>→</span></a>
+
+    <div class="form-title">Business Information</div>
+    <div class="form-sub">Fill in your details below. Fields marked <span style="color:var(--gold)">*</span> are required.</div>
+
+    <div class="form-grid">
+
+      <div class="form-group" id="fg-name">
+        <label>Business / Person Name <span class="req">*</span></label>
+        <input type="text" id="fName" placeholder="e.g. Suresh Electricals" maxlength="100">
+        <span class="field-error" id="err-name">Please enter a name.</span>
       </div>
+
+      <div class="form-group" id="fg-phone">
+        <label>Phone Number <span class="req">*</span></label>
+        <input type="tel" id="fPhone" placeholder="10-digit mobile number" maxlength="15">
+        <span class="field-hint">Customers will use this to call/WhatsApp you.</span>
+        <span class="field-error" id="err-phone">Enter a valid 10-digit number.</span>
+      </div>
+
+      <div class="form-group" id="fg-service">
+        <label>Service Type <span class="req">*</span></label>
+        <input type="text" id="fService" placeholder="e.g. Electrician, Plumber, Restaurant" maxlength="80">
+        <span class="field-error" id="err-service">Please describe your service.</span>
+      </div>
+
+      <div class="form-group" id="fg-category">
+        <label>Category <span class="req">*</span></label>
+        <select id="fCategory">
+          <option value="">— Select a category —</option>
+          <option value="emergency">🚨 Emergency</option>
+          <option value="home">🏠 Home Services</option>
+          <option value="repairs">🔧 Repairs</option>
+          <option value="transport">🚗 Transport</option>
+          <option value="food">🍔 Food & Daily Needs</option>
+          <option value="education">🎓 Education</option>
+          <option value="professional">💼 Professional</option>
+          <option value="other">🧰 Other</option>
+        </select>
+        <span class="field-error" id="err-category">Please select a category.</span>
+      </div>
+
+      <div class="form-group full" id="fg-location">
+        <label>Location / Area</label>
+        <input type="text" id="fLocation" placeholder="e.g. Bicholim Market, near Main Road" maxlength="120" value="Bicholim, Goa">
+      </div>
+
+      <div class="form-group full">
+        <label>Email (optional — for notifications)</label>
+        <input type="email" id="fEmail" placeholder="your@email.com">
+      </div>
+
+
+      <div class="form-group full">
+        <label>Business Logo / Photo <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+        <div class="image-upload-area" id="uploadArea">
+          <input type="file" id="fImage" accept="image/jpeg,image/png,image/webp" onchange="handleImageSelect(this)">
+          <div id="uploadPrompt">
+            <div class="upload-icon">🖼️</div>
+            <div class="upload-label">Click or drag to upload your logo</div>
+            <div class="upload-hint">JPG, PNG or WEBP · Max 2MB · Recommended 400×400px</div>
+          </div>
+          <div class="image-preview" id="imagePreview">
+            <img id="previewImg" src="" alt="Preview">
+            <div class="remove-img" onclick="removeImage(event)">✕</div>
+          </div>
+        </div>
+        <span class="field-hint" id="imgHint"></span>
+      </div>
+
+      <div class="form-group full">
+        <label>Short Description (optional)</label>
+        <textarea id="fDesc" placeholder="Tell customers what you offer, your experience, working hours, etc." maxlength="300"></textarea>
+        <span class="field-hint"><span id="charCount">0</span>/300 characters</span>
+      </div>
+
     </div>
-    <div class="side-card" style="background:var(--navy);border-color:transparent">
-      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">List Your Business</div>
-      <div style="font-size:14px;color:#9aa3b8;line-height:1.6;margin-bottom:16px">Are you a service provider? Get listed on Bicholim Connect today.</div>
-      <a href="submit.html" style="display:block;text-align:center;background:var(--gold);color:var(--navy);text-decoration:none;padding:13px;border-radius:12px;font-weight:700;font-size:14px;transition:background .3s">+ Add Your Service</a>
+
+    <div class="form-actions">
+      <a href="index.html" class="btn btn-outline">Cancel</a>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">Submit for Review →</button>
+    </div>
+
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-state" id="successSection">
+    <span class="success-icon">🎉</span>
+    <div class="success-title">Listing Submitted!</div>
+    <p class="success-msg">Your business has been submitted for review. The Bicholim Connect admin will verify your details and your listing will go live within 24 hours.</p>
+    <div class="success-id" id="successId">Reference ID: —</div>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="index.html" class="btn btn-primary">Back to Homepage</a>
+      <a href="submit.html" class="btn btn-outline" onclick="location.reload()">Submit Another</a>
     </div>
   </div>
 
-  <div class="cta-strip">
-    <div>
-      <div class="cta-label">For Businesses</div>
-      <div class="cta-title">Want to List Your Services?</div>
-      <p class="cta-desc">Join Bicholim Connect and get discovered by thousands of locals looking for trusted professionals.</p>
-    </div>
-    <a href="tel:7358425108" class="cta-btn">📞 73584 25108</a>
-  </div>
 </div>
 
 <footer>
   <div class="footer-logo">Bicholim <span>Connect</span></div>
-  <div style="font-size:13px">© 2026 Bicholim Connect · Local Services Platform</div>
+  <div style="font-size:13px">Questions? Call us: <a href="tel:7358425108" style="color:var(--gold);text-decoration:none">73584 25108</a></div>
 </footer>
 
 <script src="config.js"></script>
 <script>
-// Read URL params: service.html?category=home&title=Electricians
-const params   = new URLSearchParams(location.search);
-const catId    = params.get('category') || 'all';
-const catTitle = params.get('title')    || 'Services';
 
-const CATS = BC_CONFIG.CATEGORIES;
-const catObj = CATS.find(c => c.id === catId) || { label: catTitle, icon: '📋' };
+// ── IMAGE HANDLING ─────────────────────────────────────────
+let imageBase64 = '';
+let imageMime   = 'image/jpeg';
+let imageName   = 'logo.jpg';
 
-// Update hero
-document.getElementById('heroCategory').textContent = catObj.label;
-document.getElementById('heroTitle').textContent    = catTitle;
-document.getElementById('heroDesc').textContent     = `Find trusted ${catTitle.toLowerCase()} professionals in Bicholim — verified and ready to help.`;
-document.getElementById('listingsTitle').textContent = catTitle + ' in Bicholim';
+// Resize + compress image using canvas — keeps base64 small enough for JSONP URL
+function compressImage(file, maxWidth, maxHeight, quality) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        let w = img.width, h = img.height;
+        if (w > maxWidth)  { h = Math.round(h * maxWidth  / w); w = maxWidth;  }
+        if (h > maxHeight) { w = Math.round(w * maxHeight / h); h = maxHeight; }
+        const canvas = document.createElement('canvas');
+        canvas.width  = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        // Always output as JPEG for smallest size
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
-async function loadProviders() {
+async function handleImageSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    document.getElementById('imgHint').textContent = '⚠️ File too large. Max 5MB.';
+    document.getElementById('imgHint').style.color = '#dc2626';
+    input.value = '';
+    return;
+  }
+
+  document.getElementById('imgHint').textContent = '⏳ Processing image…';
+  document.getElementById('imgHint').style.color = '#d97706';
+
   try {
-    const res = await BC_CONFIG.get('getListings', { category: catId });
-    if (!res.success) throw new Error(res.error);
+    // Compress to max 300×300px at 70% quality — results in ~15-30KB base64
+    const dataUrl = await compressImage(file, 300, 300, 0.70);
+    imageBase64 = dataUrl.split(',')[1];
+    imageMime   = 'image/jpeg';
+    imageName   = file.name.replace(/\.[^.]+$/, '') + '.jpg';
 
-    const listings = res.listings || [];
-    document.getElementById('heroPill2').textContent = `${listings.length} Provider${listings.length !== 1 ? 's' : ''} Listed`;
+    const sizeKB = Math.round(imageBase64.length * 0.75 / 1024);
+    document.getElementById('imgHint').textContent = '✅ Image ready (' + sizeKB + ' KB compressed)';
+    document.getElementById('imgHint').style.color = '#16a34a';
 
-    const area = document.getElementById('providersArea');
-    if (listings.length === 0) {
-      area.innerHTML = `<div class="empty-state">
-        <div style="font-size:48px;margin-bottom:16px">${catObj.icon}</div>
-        <p>No ${catTitle.toLowerCase()} listed yet.</p>
-        <br><a href="submit.html" style="color:var(--gold);font-weight:600">Be the first to list your service →</a>
-      </div>`;
-      return;
-    }
-
-    area.innerHTML = listings.map(l => `
-      <div class="provider-card">
-        <div class="pc-head">
-          <div class="pc-top">
-            <div style="display:flex;gap:14px;align-items:flex-start;flex:1">
-              ${l.imageUrl
-                ? `<img class="pc-logo" src="${esc(l.imageUrl)}" alt="${esc(l.name)} logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-                : ''}
-              <div class="pc-logo-placeholder" ${l.imageUrl ? 'style="display:none"' : ''}>${catObj.icon}</div>
-              <div>
-                <div class="pc-name">${esc(l.name)}</div>
-                <span class="pc-cat">${catObj.label}</span>
-              </div>
-            </div>
-            <span class="open-badge"><span class="open-dot"></span> Available</span>
-          </div>
-          <div class="pc-service">${esc(l.serviceType)}</div>
-        </div>
-        <div class="pc-details">
-          <div class="pc-row"><span class="pc-row-icon">📞</span><div><div class="pc-row-label">Phone</div><div class="pc-row-val"><a href="tel:${l.phone}">${formatPhone(l.phone)}</a></div></div></div>
-          <div class="pc-row"><span class="pc-row-icon">📍</span><div><div class="pc-row-label">Location</div><div class="pc-row-val">${esc(l.location)}</div></div></div>
-          ${l.description ? `<div class="pc-row"><span class="pc-row-icon">📝</span><div><div class="pc-row-label">About</div><div class="pc-row-val">${esc(l.description)}</div></div></div>` : ''}
-        </div>
-        <div class="pc-actions">
-          <a href="tel:${l.phone}" class="pc-btn pc-btn-call">📞 Call Now</a>
-          <a href="https://wa.me/91${l.phone}" target="_blank" class="pc-btn pc-btn-wa">💬 WhatsApp</a>
-        </div>
-      </div>`).join('');
-  } catch(e) {
-    document.getElementById('providersArea').innerHTML = `<div class="empty-state">⚠️ Could not load listings: ${e.message}</div>`;
+    // Show preview
+    document.getElementById('previewImg').src = dataUrl;
+    document.getElementById('uploadPrompt').style.display = 'none';
+    document.getElementById('imagePreview').style.display = 'block';
+  } catch(err) {
+    document.getElementById('imgHint').textContent = '⚠️ Could not process image. Try a different file.';
+    document.getElementById('imgHint').style.color = '#dc2626';
   }
 }
 
-function formatPhone(p) {
-  const s = String(p);
-  return s.length === 10 ? `${s.slice(0,5)} ${s.slice(5)}` : s;
-}
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function removeImage(e) {
+  e.stopPropagation();
+  imageBase64 = '';
+  imageMime   = 'image/jpeg';
+  imageName   = 'logo.jpg';
+  document.getElementById('fImage').value = '';
+  document.getElementById('previewImg').src = '';
+  document.getElementById('uploadPrompt').style.display = 'block';
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imgHint').textContent = '';
 }
 
-loadProviders();
+// Drag and drop
+const uploadArea = document.getElementById('uploadArea');
+uploadArea.addEventListener('dragover',  e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+uploadArea.addEventListener('dragleave', ()  => uploadArea.classList.remove('dragover'));
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadArea.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('fImage').files = dt.files;
+    handleImageSelect(document.getElementById('fImage'));
+  }
+});
+
+// Char counter
+document.getElementById('fDesc').addEventListener('input', function() {
+  document.getElementById('charCount').textContent = this.value.length;
+});
+
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('step'+i);
+    el.classList.remove('active','done');
+    if (i < n) el.classList.add('done');
+    else if (i === n) el.classList.add('active');
+  });
+}
+
+function validate() {
+  let valid = true;
+
+  const fields = [
+    { id:'fName',     group:'fg-name',     err:'err-name',     check: v => v.trim().length >= 2 },
+    { id:'fPhone',    group:'fg-phone',    err:'err-phone',    check: v => /^\d{10,15}$/.test(v.replace(/\D/g,'')) && v.replace(/\D/g,'').length >= 10 },
+    { id:'fService',  group:'fg-service',  err:'err-service',  check: v => v.trim().length >= 2 },
+    { id:'fCategory', group:'fg-category', err:'err-category', check: v => v !== '' }
+  ];
+
+  fields.forEach(f => {
+    const val = document.getElementById(f.id).value;
+    const ok  = f.check(val);
+    document.getElementById(f.group).classList.toggle('has-error', !ok);
+    if (!ok) valid = false;
+  });
+
+  return valid;
+}
+
+async function submitForm() {
+  if (!validate()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  setStep(2);
+
+  // Step 1: Submit listing WITHOUT image (keeps URL short, avoids JSONP limit)
+  const payload = {
+    name:        document.getElementById('fName').value.trim(),
+    phone:       document.getElementById('fPhone').value.trim(),
+    serviceType: document.getElementById('fService').value.trim(),
+    category:    document.getElementById('fCategory').value,
+    location:    document.getElementById('fLocation').value.trim(),
+    email:       document.getElementById('fEmail').value.trim(),
+    description: document.getElementById('fDesc').value.trim()
+  };
+
+  try {
+    const res = await BC_CONFIG.post('submitListing', payload);
+    if (!res.success) throw new Error(res.error || 'Submission failed.');
+
+    const listingId = res.id;
+
+    // Step 2: Upload image separately if one was selected
+    if (imageBase64) {
+      btn.textContent = 'Uploading image…';
+      try {
+        // Split base64 into chunks of 5000 chars to stay within URL limits
+        const chunkSize  = 5000;
+        const totalChunks = Math.ceil(imageBase64.length / chunkSize);
+
+        for (let i = 0; i < totalChunks; i++) {
+          const chunk = imageBase64.slice(i * chunkSize, (i + 1) * chunkSize);
+          await BC_CONFIG.call('uploadImageChunk', {
+            id:          listingId,
+            chunk:       chunk,
+            chunkIndex:  i,
+            totalChunks: totalChunks,
+            imageMime:   imageMime,
+            imageName:   imageName
+          });
+        }
+      } catch(imgErr) {
+        // Image upload failed — listing still saved, just without image
+        console.warn('Image upload failed:', imgErr.message);
+      }
+    }
+
+    // Show success
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('successSection').style.display = 'block';
+    document.getElementById('successId').textContent = 'Reference ID: ' + listingId;
+    setStep(3);
+
+  } catch(e) {
+    alert('Error: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Submit for Review →';
+    setStep(1);
+  }
+}
+
+// Clear errors on input
+document.querySelectorAll('input,select').forEach(el => {
+  el.addEventListener('input', () => {
+    const fg = el.closest('.form-group');
+    if (fg) fg.classList.remove('has-error');
+  });
+});
 </script>
 </body>
 </html>
