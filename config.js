@@ -2,7 +2,7 @@
 // BICHOLIM CONNECT — Frontend Configuration
 // ============================================================
 // Uses JSONP instead of fetch() to bypass CORS issues with
-// Google Apps Script on all browsers (desktop + mobile).
+// Google Apps Script on all browsers (desktop + mobile)
 // ============================================================
 
 const BC_CONFIG = {
