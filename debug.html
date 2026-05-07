@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debug — Bicholim Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f0f0f0;padding:24px;color:#111}
+h1{font-size:22px;font-weight:700;margin-bottom:4px}
+.sub{font-size:13px;color:#666;margin-bottom:24px}
+.card{background:#fff;border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.card h2{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.step-num{width:26px;height:26px;border-radius:50%;background:#111;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.result{font-size:13px;padding:12px 14px;border-radius:10px;margin-top:10px;font-family:monospace;word-break:break-all;line-height:1.6}
+.ok{background:#d1fae5;color:#065f46}
+.err{background:#fee2e2;color:#991b1b}
+.warn{background:#fef3c7;color:#92400e}
+.info{background:#dbeafe;color:#1e40af}
+.pending{background:#f5f5f5;color:#666}
+button{padding:11px 20px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-run{background:#111;color:#fff}
+.btn-run:hover{background:#333}
+.btn-run:disabled{opacity:.5;cursor:not-allowed}
+input[type=text],input[type=file]{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:10px;outline:none}
+input:focus{border-color:#c9a84c}
+label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}
+.img-preview{max-width:160px;max-height:160px;border-radius:10px;border:1px solid #ddd;margin-top:10px;display:none}
+.row{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<h1>🔍 Bicholim Connect — Image Debug Tool</h1>
+<div class="sub">Run each test in order to find exactly where the image issue is.</div>
+
+<!-- TEST 1: API URL -->
+<div class="card">
+  <h2><span class="step-num">1</span> Check API URL</h2>
+  <label>Paste your Apps Script URL:</label>
+  <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/.../exec">
+  <button class="btn-run" onclick="testPing()">▶ Run Ping Test</button>
+  <div class="result pending" id="r1">Not run yet.</div>
+</div>
+
+<!-- TEST 2: ImgBB -->
+<div class="card">
+  <h2><span class="step-num">2</span> Test ImgBB Upload</h2>
+  <label>Paste your ImgBB API key:</label>
+  <input type="text" id="imgbbKey" placeholder="your_imgbb_api_key">
+  <label>Pick any image to test upload:</label>
+  <input type="file" id="testImg" accept="image/*">
+  <img class="img-preview" id="imgPreview">
+  <button class="btn-run" onclick="testImgBB()">▶ Upload to ImgBB</button>
+  <div class="result pending" id="r2">Not run yet.</div>
+</div>
+
+<!-- TEST 3: Submit with imageUrl -->
+<div class="card">
+  <h2><span class="step-num">3</span> Submit Test Listing with Image URL</h2>
+  <p style="font-size:13px;color:#555;margin-bottom:12px">Uses the ImgBB URL from Test 2. Submits a test listing to your sheet.</p>
+  <button class="btn-run" id="btn3" onclick="testSubmit()" disabled>▶ Submit Test Listing</button>
+  <div class="result pending" id="r3">Run Test 2 first.</div>
+</div>
+
+<!-- TEST 4: Read back listing -->
+<div class="card">
+  <h2><span class="step-num">4</span> Read Back Listings — Check imageUrl</h2>
+  <p style="font-size:13px;color:#555;margin-bottom:12px">Fetches all approved listings and checks if imageUrl is present.</p>
+  <button class="btn-run" onclick="testReadBack()">▶ Read Listings</button>
+  <div class="result pending" id="r4">Not run yet.</div>
+</div>
+
+<!-- TEST 5: Display image -->
+<div class="card">
+  <h2><span class="step-num">5</span> Display Image from URL</h2>
+  <label>Paste any image URL to test if it renders:</label>
+  <div class="row">
+    <input type="text" id="imgUrlTest" placeholder="https://i.ibb.co/..." style="flex:1;margin-bottom:0">
+    <button class="btn-run" onclick="testImgDisplay()">▶ Test</button>
+  </div>
+  <div class="result pending" id="r5">Not run yet.</div>
+  <img class="img-preview" id="imgDisplayTest" style="max-width:200px;margin-top:12px">
+</div>
+
+<script src="config.js"></script>
+<script>
+let imgbbUrl = '';
+
+// ── TEST 1: PING ────────────────────────────────────────────
+async function testPing() {
+  const url = document.getElementById('apiUrl').value.trim();
+  if (!url) { setResult('r1','err','❌ Please paste your Apps Script URL first.'); return; }
+
+  // Override config URL for this test
+  BC_CONFIG.API_URL = url;
+  setResult('r1','pending','⏳ Pinging API…');
+  try {
+    const res = await BC_CONFIG.call('ping');
+    if (res.success) {
+      setResult('r1','ok','✅ API is reachable!\n' + JSON.stringify(res, null, 2));
+    } else {
+      setResult('r1','err','❌ API returned error:\n' + JSON.stringify(res, null, 2));
+    }
+  } catch(e) {
+    setResult('r1','err','❌ Cannot reach API: ' + e.message);
+  }
+}
+
+// ── TEST 2: IMGBB ───────────────────────────────────────────
+async function testImgBB() {
+  const key  = document.getElementById('imgbbKey').value.trim();
+  const file = document.getElementById('testImg').files[0];
+
+  if (!key)  { setResult('r2','err','❌ Please enter your ImgBB API key.'); return; }
+  if (!file) { setResult('r2','err','❌ Please select an image file.'); return; }
+
+  // Show local preview
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('imgPreview').src = e.target.result;
+    document.getElementById('imgPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+
+  setResult('r2','pending','⏳ Uploading to ImgBB…');
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const res = await fetch('https://api.imgbb.com/1/upload?key=' + key, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      imgbbUrl = data.data.url;
+      setResult('r2','ok',
+        '✅ ImgBB upload SUCCESS!\n' +
+        'URL: ' + imgbbUrl + '\n' +
+        'Delete URL: ' + data.data.delete_url + '\n\n' +
+        'Full response:\n' + JSON.stringify(data.data, null, 2)
+      );
+      document.getElementById('btn3').disabled = false;
+      // Also fill in display test
+      document.getElementById('imgUrlTest').value = imgbbUrl;
+    } else {
+      setResult('r2','err','❌ ImgBB error:\n' + JSON.stringify(data, null, 2));
+    }
+  } catch(e) {
+    setResult('r2','err','❌ Fetch to ImgBB failed: ' + e.message + '\n\nThis likely means your ImgBB API key is wrong or network blocked ImgBB.');
+  }
+}
+
+// ── TEST 3: SUBMIT LISTING ──────────────────────────────────
+async function testSubmit() {
+  if (!imgbbUrl) { setResult('r3','err','❌ Run Test 2 first to get an image URL.'); return; }
+  setResult('r3','pending','⏳ Submitting test listing…');
+
+  try {
+    const res = await BC_CONFIG.call('submitListing', {
+      name:        'DEBUG TEST LISTING',
+      phone:       '9999999999',
+      serviceType: 'Debug Test',
+      category:    'other',
+      location:    'Bicholim, Goa',
+      description: 'Automated debug test — please delete',
+      imageUrl:    imgbbUrl
+    });
+
+    if (res.success) {
+      setResult('r3','ok',
+        '✅ Listing submitted!\nID: ' + res.id +
+        '\n\nNow check your Google Sheet — look at the ImageUrl column (column 12).' +
+        '\nDoes it contain the URL? If yes, approve it and run Test 4.'
+      );
+    } else {
+      setResult('r3','err','❌ Submit failed:\n' + JSON.stringify(res, null, 2));
+    }
+  } catch(e) {
+    setResult('r3','err','❌ Error: ' + e.message);
+  }
+}
+
+// ── TEST 4: READ BACK ───────────────────────────────────────
+async function testReadBack() {
+  setResult('r4','pending','⏳ Fetching listings…');
+  try {
+    const res = await BC_CONFIG.call('getListings');
+    if (!res.success) throw new Error(res.error);
+
+    const withImg    = res.listings.filter(l => l.imageUrl && l.imageUrl.trim());
+    const withoutImg = res.listings.filter(l => !l.imageUrl || !l.imageUrl.trim());
+
+    let msg = '📋 Total approved listings: ' + res.listings.length + '\n';
+    msg    += '🖼️  With image URL: ' + withImg.length + '\n';
+    msg    += '📭 Without image:  ' + withoutImg.length + '\n\n';
+
+    if (withImg.length > 0) {
+      msg += 'Listings WITH images:\n';
+      withImg.forEach(l => {
+        msg += '• ' + l.name + '\n  URL: ' + l.imageUrl + '\n';
+      });
+      setResult('r4','ok', msg);
+    } else {
+      msg += '⚠️ No approved listings have an imageUrl.\n\n';
+      msg += 'Possible causes:\n';
+      msg += '1. The test listing from Test 3 is still "pending" — approve it in admin panel first\n';
+      msg += '2. The ImageUrl column (col 12) is missing from your sheet — add it manually\n';
+      msg += '3. You submitted listings BEFORE the ImageUrl column was added — those rows wont have it\n';
+      msg += '4. Code.gs was not redeployed after the imageUrl change';
+      setResult('r4','warn', msg);
+    }
+
+    // Also show raw first listing
+    if (res.listings.length > 0) {
+      document.getElementById('r4').textContent +=
+        '\n\nFirst listing raw data:\n' + JSON.stringify(res.listings[0], null, 2);
+    }
+  } catch(e) {
+    setResult('r4','err','❌ Error: ' + e.message);
+  }
+}
+
+// ── TEST 5: DISPLAY IMAGE ───────────────────────────────────
+function testImgDisplay() {
+  const url = document.getElementById('imgUrlTest').value.trim();
+  if (!url) { setResult('r5','err','❌ Please paste an image URL.'); return; }
+
+  const img  = document.getElementById('imgDisplayTest');
+  img.style.display = 'none';
+  setResult('r5','pending','⏳ Loading image…');
+
+  img.onload = () => {
+    img.style.display = 'block';
+    setResult('r5','ok','✅ Image loads correctly! (' + img.naturalWidth + '×' + img.naturalHeight + 'px)\nIf this works but your listing page doesnt show it — the issue is in index.html/service.html rendering logic.');
+  };
+  img.onerror = () => {
+    setResult('r5','err','❌ Image failed to load from this URL.\nThe URL is broken, expired, or the image was deleted from ImgBB.');
+  };
+  img.src = url;
+}
+
+// ── UTIL ────────────────────────────────────────────────────
+function setResult(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = 'result ' + type;
+  el.textContent = msg;
+}
+</script>
+</body>
+</html>
