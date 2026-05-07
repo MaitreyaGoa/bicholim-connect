@@ -1,9 +1,8 @@
 // ============================================================
 // BICHOLIM CONNECT — Frontend Configuration
 // ============================================================
-// IMPORTANT: Apps Script POST requests cause CORS errors in browsers.
-// Solution: ALL requests (including form submissions) use GET with
-// URL parameters. Apps Script GET requests are CORS-friendly.
+// Uses JSONP instead of fetch() to bypass CORS issues with
+// Google Apps Script on all browsers (desktop + mobile).
 // ============================================================
 
 const BC_CONFIG = {
@@ -25,27 +24,56 @@ const BC_CONFIG = {
     { id: 'other',        label: 'Other',          icon: '🧰' }
   ],
 
-  // ── ALL requests go as GET with URL params (CORS-safe) ──
-  async call(action, params = {}) {
-    const url = new URL(this.API_URL);
-    url.searchParams.set('action', action);
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== null) url.searchParams.set(k, String(v));
+  // ── JSONP call — works on ALL browsers, no CORS issues ──
+  call(action, params = {}) {
+    return new Promise((resolve, reject) => {
+      // Unique callback name
+      const cbName = '_bc_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+
+      // Timeout after 15 seconds
+      const timer = setTimeout(() => {
+        cleanup();
+        reject(new Error('Request timed out. Check your API URL in config.js'));
+      }, 15000);
+
+      function cleanup() {
+        clearTimeout(timer);
+        delete window[cbName];
+        const el = document.getElementById(cbName);
+        if (el) el.remove();
+      }
+
+      // Global callback Apps Script will call
+      window[cbName] = function(data) {
+        cleanup();
+        resolve(data);
+      };
+
+      // Build URL with all params + callback
+      const url = new URL(BC_CONFIG.API_URL);
+      url.searchParams.set('action',   action);
+      url.searchParams.set('callback', cbName);
+      Object.entries(params).forEach(([k, v]) => {
+        if (v !== undefined && v !== null && v !== '') {
+          url.searchParams.set(k, String(v));
+        }
+      });
+
+      // Inject script tag
+      const script  = document.createElement('script');
+      script.id     = cbName;
+      script.src    = url.toString();
+      script.onerror = () => {
+        cleanup();
+        reject(new Error('Failed to reach API. Check your Apps Script deployment URL.'));
+      };
+      document.head.appendChild(script);
     });
-    const res = await fetch(url.toString(), { redirect: 'follow' });
-    if (!res.ok) throw new Error('Network error: ' + res.status);
-    return res.json();
   },
 
-  // Kept for backwards compat — both now use GET
-  async get(action, params = {}) {
-    return this.call(action, params);
-  },
-
-  // POST-like actions are sent as GET with all fields as params
-  async post(action, data = {}) {
-    return this.call(action, data);
-  },
+  // Aliases so existing page code works unchanged
+  async get(action, params = {})  { return this.call(action, params); },
+  async post(action, params = {}) { return this.call(action, params); },
 
   // Session helpers
   getToken()  { return localStorage.getItem('bc_admin_token'); },
