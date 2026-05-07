@@ -100,6 +100,28 @@ footer{background:var(--navy);color:#9aa3b8;padding:30px 7%;display:flex;justify
   .nav-links .nav-link:not(.cta){display:none}
 }
 
+
+/* ── TWO-LEVEL CATEGORY UI ─────────────────────── */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:36px}
+.cat-card{background:var(--white);border:1.5px solid var(--border);border-radius:20px;padding:20px 18px;cursor:pointer;transition:all .28s;position:relative;text-align:left}
+.cat-card:hover{border-color:rgba(201,168,76,.4);box-shadow:0 10px 28px rgba(0,0,0,.08);transform:translateY(-3px)}
+.cat-card.active{border-color:var(--gold);background:var(--navy);color:#fff}
+.cat-card-icon{font-size:28px;margin-bottom:10px;display:block;line-height:1}
+.cat-card-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:6px}
+.cat-card.active .cat-card-name{color:#fff}
+.cat-card-count{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+.cat-card.active .cat-card-count{color:var(--gold-light)}
+.cat-badge{position:absolute;top:14px;right:14px;background:var(--gold-pale);color:#7a5c1a;border:1px solid rgba(201,168,76,.3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
+.cat-card.active .cat-badge{background:rgba(255,255,255,.15);color:var(--gold-light);border-color:rgba(255,255,255,.2)}
+
+/* Sub-service pills */
+.sub-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;padding:16px 20px;background:var(--white);border:1px solid var(--border);border-radius:18px;align-items:center}
+.sub-bar-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);flex-shrink:0;margin-right:4px}
+.sub-pill{padding:7px 14px;border-radius:999px;border:1.5px solid var(--border);background:var(--cream);font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .22s;white-space:nowrap}
+.sub-pill:hover{border-color:rgba(201,168,76,.4);color:var(--text)}
+.sub-pill.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.sub-bar-hidden{display:none}
+
 .lc-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1px solid var(--border);background:#f5f5f5;flex-shrink:0}
 .lc-logo-placeholder{width:52px;height:52px;border-radius:12px;background:var(--gold-pale);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 </style>
@@ -129,18 +151,23 @@ footer{background:var(--navy);color:#9aa3b8;padding:30px 7%;display:flex;justify
   </div>
   <div class="hero-stats">
     <div class="stat"><div class="stat-num" id="totalCount">—</div><div class="stat-label">Local Businesses</div></div>
-    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Services</div></div>
     <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Emergency Info</div></div>
   </div>
   <div class="hero-divider"></div>
 </section>
 
 <section class="section">
-  <div class="section-label">Browse</div>
-  <div class="section-title">Explore Services</div>
+  <div class="section-label">Browse All 100+ Services</div>
+  <div class="section-title">Explore by Category</div>
 
-  <div class="cat-pills" id="catPills">
-    <div class="cat-pill active" data-cat="all">✨ All Services</div>
+  <!-- Major category cards -->
+  <div class="cat-grid" id="catGrid"></div>
+
+  <!-- Sub-service pills (shown when a category is selected) -->
+  <div class="sub-bar sub-bar-hidden" id="subBar">
+    <span class="sub-bar-label">Filter:</span>
+    <div class="sub-pill active" data-sub="all" onclick="filterSub('all',this)">All</div>
   </div>
 
   <div id="listingsContainer">
@@ -170,53 +197,123 @@ footer{background:var(--navy);color:#9aa3b8;padding:30px 7%;display:flex;justify
 <script src="config.js"></script>
 <script>
 const CATEGORIES = BC_CONFIG.CATEGORIES;
-let allListings = [];
+let allListings    = [];
 let activeCategory = 'all';
-let searchQuery = '';
+let activeSub      = 'all';
+let searchQuery    = '';
 
-// Build category pills
-function buildPills() {
-  const container = document.getElementById('catPills');
+// ── BUILD MAJOR CATEGORY CARDS ─────────────────────────────
+function buildCatGrid() {
+  const grid = document.getElementById('catGrid');
+
+  // "All" card first
+  const allCard = document.createElement('div');
+  allCard.className = 'cat-card active';
+  allCard.dataset.cat = 'all';
+  allCard.innerHTML = `
+    <span class="cat-card-icon">✨</span>
+    <div class="cat-card-name">All Services</div>
+    <div class="cat-card-count">100+ services across Bicholim</div>`;
+  allCard.addEventListener('click', () => selectCategory('all', allCard));
+  grid.appendChild(allCard);
+
   CATEGORIES.forEach(cat => {
-    const el = document.createElement('div');
-    el.className = 'cat-pill';
-    el.dataset.cat = cat.id;
-    el.textContent = cat.icon + ' ' + cat.label;
-    el.addEventListener('click', () => filterCat(cat.id));
-    container.appendChild(el);
+    const card = document.createElement('div');
+    card.className = 'cat-card';
+    card.dataset.cat = cat.id;
+    card.innerHTML = `
+      <div class="cat-badge">${cat.count}</div>
+      <span class="cat-card-icon">${cat.icon}</span>
+      <div class="cat-card-name">${cat.label}</div>
+      <div class="cat-card-count">${cat.count} services listed</div>`;
+    card.addEventListener('click', () => selectCategory(cat.id, card));
+    grid.appendChild(card);
   });
 }
 
-function filterCat(id) {
+// ── SELECT MAJOR CATEGORY ──────────────────────────────────
+function selectCategory(id, cardEl) {
   activeCategory = id;
-  document.querySelectorAll('.cat-pill').forEach(p => {
-    p.classList.toggle('active', p.dataset.cat === id);
-  });
+  activeSub      = 'all';
+
+  // Update card active states
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+  cardEl.classList.add('active');
+
+  // Show/hide sub-bar
+  const subBar = document.getElementById('subBar');
+  if (id === 'all') {
+    subBar.classList.add('sub-bar-hidden');
+  } else {
+    buildSubBar(id);
+    subBar.classList.remove('sub-bar-hidden');
+  }
+
   renderListings();
 }
 
+// ── BUILD SUB-SERVICE PILLS ────────────────────────────────
+function buildSubBar(catId) {
+  const cat    = CATEGORIES.find(c => c.id === catId);
+  const subBar = document.getElementById('subBar');
+
+  // Clear old pills (keep label)
+  subBar.innerHTML = `<span class="sub-bar-label">${cat.icon} Filter:</span>
+    <div class="sub-pill active" data-sub="all" onclick="filterSub('all',this)">All ${cat.count}</div>`;
+
+  if (cat && cat.services) {
+    cat.services.forEach(svc => {
+      const pill = document.createElement('div');
+      pill.className    = 'sub-pill';
+      pill.dataset.sub  = svc;
+      pill.textContent  = svc;
+      pill.onclick      = function() { filterSub(svc, this); };
+      subBar.appendChild(pill);
+    });
+  }
+}
+
+// ── FILTER BY SUB-SERVICE ──────────────────────────────────
+function filterSub(sub, el) {
+  activeSub = sub;
+  document.querySelectorAll('.sub-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderListings();
+}
+
+// ── HELPERS ────────────────────────────────────────────────
 function getCatIcon(catId) {
   const c = CATEGORIES.find(x => x.id === catId);
   return c ? c.icon : '📋';
 }
-
 function getCatLabel(catId) {
   const c = CATEGORIES.find(x => x.id === catId);
   return c ? c.label : catId;
 }
 
+// ── RENDER LISTINGS ────────────────────────────────────────
 function renderListings() {
   const q = searchQuery.toLowerCase();
+
   const filtered = allListings.filter(l => {
     const catMatch = activeCategory === 'all' || l.category === activeCategory;
-    const searchMatch = !q || [l.name, l.serviceType, l.location].join(' ').toLowerCase().includes(q);
-    return catMatch && searchMatch;
+    const subMatch = activeSub === 'all' ||
+      l.serviceType.toLowerCase().includes(activeSub.toLowerCase());
+    const searchMatch = !q ||
+      [l.name, l.serviceType, l.location, l.category].join(' ').toLowerCase().includes(q);
+    return catMatch && subMatch && searchMatch;
   });
 
   const grid = document.getElementById('listingsContainer');
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>No services found. Try a different search or category.</p></div>`;
+    const catObj = CATEGORIES.find(c => c.id === activeCategory);
+    grid.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">${catObj ? catObj.icon : '🔍'}</div>
+      <p style="font-size:16px;font-weight:600;margin-bottom:8px">No listings found</p>
+      <p style="font-size:14px;color:var(--muted)">Be the first to list your service in this category!</p>
+      <br><a href="submit.html" style="color:var(--gold);font-weight:700;font-size:14px">+ Add Your Business →</a>
+    </div>`;
     return;
   }
 
@@ -228,7 +325,7 @@ function renderListings() {
           <span class="lc-cat">${getCatLabel(l.category)}</span>
         </div>
         ${l.imageUrl
-          ? `<img class="lc-logo" src="${esc(l.imageUrl)}" alt="${esc(l.name)} logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          ? `<img class="lc-logo" src="${esc(l.imageUrl)}" alt="${esc(l.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
           : ''}
         <div class="lc-logo-placeholder" ${l.imageUrl ? 'style="display:none"' : ''}>${getCatIcon(l.category)}</div>
       </div>
@@ -247,13 +344,11 @@ function renderListings() {
 
 function formatPhone(p) {
   const s = String(p);
-  return s.length === 10 ? `${s.slice(0,5)} ${s.slice(5)}` : s;
+  return s.length === 10 ? s.slice(0,5)+' '+s.slice(5) : s;
 }
-
 function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -261,6 +356,7 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ── LOAD LISTINGS ──────────────────────────────────────────
 async function loadListings() {
   try {
     const res = await BC_CONFIG.get('getListings');
@@ -268,16 +364,14 @@ async function loadListings() {
       allListings = res.listings || [];
       document.getElementById('totalCount').textContent = allListings.length + '+';
       renderListings();
-    } else {
-      throw new Error(res.error);
-    }
+    } else { throw new Error(res.error); }
   } catch(e) {
     document.getElementById('listingsContainer').innerHTML =
       `<div class="empty-state"><div class="empty-icon">⚠️</div><p>Could not load listings. Make sure the API URL is set in config.js</p></div>`;
   }
 }
 
-// Search debounce
+// ── SEARCH ─────────────────────────────────────────────────
 let searchTimer;
 document.getElementById('searchInput').addEventListener('input', e => {
   clearTimeout(searchTimer);
@@ -287,7 +381,7 @@ document.getElementById('searchInput').addEventListener('input', e => {
   }, 300);
 });
 
-buildPills();
+buildCatGrid();
 loadListings();
 </script>
 </body>
