@@ -2,7 +2,7 @@
 // BICHOLIM CONNECT — Frontend Configuration
 // ============================================================
 // Uses JSONP instead of fetch() to bypass CORS issues with
-// Google Apps Script on all browsers (desktop + mobile)
+// Google Apps Script on all browsers (desktop + mobile).
 // ============================================================
 
 const BC_CONFIG = {
@@ -14,14 +14,14 @@ const BC_CONFIG = {
   CONTACT_PHONE: '7358425108',
 
   CATEGORIES: [
-    { id: 'emergency',    label: 'Emergency',      icon: '🚨' },
-    { id: 'home',         label: 'Home Services',  icon: '🏠' },
-    { id: 'repairs',      label: 'Repairs',        icon: '🔧' },
-    { id: 'transport',    label: 'Transport',      icon: '🚗' },
-    { id: 'food',         label: 'Food & Daily',   icon: '🍔' },
-    { id: 'education',    label: 'Education',      icon: '🎓' },
-    { id: 'professional', label: 'Professional',   icon: '💼' },
-    { id: 'other',        label: 'Other',          icon: '🧰' }
+    { id: 'emergency',     label: 'Emergency & Safety',               icon: '🚨', count: 12, services: ['Ambulance Services','Hospitals','Clinics','Pharmacies','Police Station','Fire Brigade','Blood Bank','Veterinary Emergency','Disaster Management Help','Women Helpline','Child Helpline','24x7 Medical Stores'] },
+    { id: 'healthcare',    label: 'Healthcare & Wellness',            icon: '🏥', count: 12, services: ['General Physicians','Dentists','Eye Specialists','Physiotherapists','Diagnostic Labs','X-Ray Centers','Nursing Services','Home Healthcare','Ayurvedic Clinics','Yoga Centers','Fitness Trainers','Mental Health Counselors'] },
+    { id: 'home',          label: 'Home Maintenance & Construction',  icon: '🏠', count: 16, services: ['Electricians','Plumbers','Carpenters','Painters','Welders','Tile Workers','Mason Contractors','Waterproofing Services','Pest Control','House Cleaning','Sofa Cleaning','Water Tank Cleaning','CCTV Installation','Interior Designers','Modular Kitchen Services','Furniture Repair'] },
+    { id: 'repairs',       label: 'Appliance & Technical Repairs',    icon: '🔧', count: 12, services: ['AC Repair','Refrigerator Repair','Washing Machine Repair','TV Repair','Mobile Repair','Laptop Repair','Computer Repair','Printer Repair','RO Water Purifier Service','Inverter Repair','Solar Panel Maintenance','Generator Repair'] },
+    { id: 'transport',     label: 'Vehicle & Transport',              icon: '🚗', count: 12, services: ['Taxi Services','Auto Rickshaw Services','Bike Rental','Car Rental','School Bus Services','Driving Schools','Bike Repair Garages','Car Garages','Tyre Puncture Repair','Car Washing Centers','Towing Services','Fuel Stations'] },
+    { id: 'food',          label: 'Food & Daily Needs',               icon: '🍔', count: 14, services: ['Grocery Stores','Supermarkets','Vegetable Vendors','Fruit Shops','Bakeries','Restaurants','Fast Food Centers','Tiffin Services','Catering Services','Sweet Shops','Meat & Fish Shops','Water Can Suppliers','Milk Suppliers','Organic Food Stores'] },
+    { id: 'education',     label: 'Education & Learning',             icon: '🎓', count: 12, services: ['Schools','Colleges','Coaching Classes','Tuition Teachers','Computer Institutes','Spoken English Classes','Competitive Exam Coaching','Music Classes','Dance Classes','Art Classes','Library Services','Day Care Centers'] },
+    { id: 'professional',  label: 'Professional & Business Services', icon: '💼', count: 10, services: ['Chartered Accountants','Lawyers','Notary Services','Insurance Agents','Real Estate Agents','Document Typing Centers','Xerox & Printing Shops','Internet Service Providers','Courier Services','Travel Agencies'] }
   ],
 
   // ── JSONP call — works on ALL browsers, no CORS issues ──
